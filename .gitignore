@@ -1,0 +1,25 @@
+# Fichiers compilés Java
+*.class
+bin/
+target/
+# Fichiers Eclipse
+.metadata
+.classpath
+.project
+.settings/
+.loadpath
+# Fichiers IntelliJ (au cas où)
+.idea/
+*.iml
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+# Logs
+*.log
+# Fichiers temporaires
+*.tmp
+*.bak
+*~
+# Dépendances
+node_modules/

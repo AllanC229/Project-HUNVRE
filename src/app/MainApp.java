@@ -32,9 +32,7 @@ public class MainApp extends Application {
 	
 	public void start(Stage primaryStage) {
 		jeu = primaryStage;
-		
-		
-		
+				
 		jeu.setTitle("HUNVRE");
 		Accueil accueil = new Accueil(new VBox());
 		jeu.setScene(accueil);

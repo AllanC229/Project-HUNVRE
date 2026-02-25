@@ -8,5 +8,6 @@
 	<classpathentry excluding="resources/images/" kind="src" path="src"/>
 	<classpathentry kind="src" path="src/resources/images"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenJFX 11"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-11.0.14/lib/mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

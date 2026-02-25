@@ -7,6 +7,6 @@
 	</classpathentry>
 	<classpathentry excluding="resources/images/" kind="src" path="src"/>
 	<classpathentry kind="src" path="src/resources/images"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenJFX 11"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/OpenJFX 11"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

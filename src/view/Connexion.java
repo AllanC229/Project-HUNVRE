@@ -3,7 +3,9 @@ package view;
 // Imports JavaFX - Layout
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 // Imports JavaFX - Composants UI
 import javafx.scene.control.Button;
@@ -15,24 +17,48 @@ import javafx.scene.control.PasswordField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
+// Imports JavaFX - Application
+import javafx.stage.Stage;
+import javafx.application.Platform;
+
 // Import contrôleur
 import controller.ControleurConnexion;
 
 /**
- * Vue de connexion : écran d'accueil avec identifiant, mot de passe,
+ * Vue de connexion : écran d'accueil avec email, mot de passe,
  * boutons de connexion et de création de compte.
  */
 public class Connexion extends Scene {
 
-    public static String valeur;
-
     public Connexion(VBox vbox) {
         super(vbox, 800, 600);
 
-        // --- Création des composants UI ---
-        Label etiquette = new Label("Bienvenue dans JavaFX !");
-        TextField identifiant = new TextField();
+        // --- Barre du haut avec bouton Quitter ---
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Button quitter = new Button("Quitter");
+        HBox topBar = new HBox(spacer, quitter);
+        topBar.setPadding(new Insets(10));
+
+        // --- Titre ---
+        Label titre = new Label("HUNVRE");
+        titre.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
+
+        // --- Description ---
+        Label description = new Label(
+            "Un jeu inspiré de Balatro pour plonger\ndans les profondeurs du rêve lucide.");
+        description.setStyle("-fx-font-size: 14px; -fx-text-alignment: center;");
+
+        // --- Champs de saisie avec labels ---
+        Label labelEmail = new Label("Adresse email :");
+        TextField email = new TextField();
+        email.setPromptText("exemple@mail.com");
+
+        Label labelMdp = new Label("Mot de passe :");
         PasswordField mdp = new PasswordField();
+        mdp.setPromptText("Votre mot de passe");
+
+        // --- Boutons ---
         Button connexion = new Button("Se connecter");
         Button creation = new Button("Créer un compte");
 
@@ -50,20 +76,30 @@ public class Connexion extends Scene {
         vbox.setPadding(new Insets(20));
 
         // --- Taille max des composants ---
-        identifiant.setMaxWidth(200);
+        email.setMaxWidth(200);
         mdp.setMaxWidth(200);
         connexion.setMaxWidth(200);
         creation.setMaxWidth(200);
 
-        // --- Croissance verticale (adaptation à la fenêtre) ---
-        VBox.setVgrow(etiquette, Priority.ALWAYS);
-        VBox.setVgrow(connexion, Priority.ALWAYS);
-
         // --- Ajout des composants dans l'ordre d'affichage ---
-        vbox.getChildren().addAll(etiquette, identifiant, mdp, connexion, creation);
+        vbox.getChildren().addAll(
+            topBar, titre, description,
+            labelEmail, email,
+            labelMdp, mdp,
+            connexion, creation
+        );
 
         // --- Événements ---
-        connexion.setOnAction(e -> new ControleurConnexion(1));
-        creation.setOnAction(e -> new ControleurConnexion(2));
+        connexion.setOnAction(e -> {
+            Stage stage = (Stage) connexion.getScene().getWindow();
+            new ControleurConnexion(1, email.getText(), mdp.getText(), stage);
+        });
+
+        creation.setOnAction(e -> {
+            Stage stage = (Stage) creation.getScene().getWindow();
+            new ControleurConnexion(2, "", "", stage);
+        });
+
+        quitter.setOnAction(e -> Platform.exit());
     }
 }

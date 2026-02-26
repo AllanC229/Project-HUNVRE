@@ -6,6 +6,7 @@ import java.sql.*;
 import app.MainApp;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import model.Utilisateur;
 import view.Accueil;
 import view.TableauScore;
 

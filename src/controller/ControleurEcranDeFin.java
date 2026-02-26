@@ -43,7 +43,7 @@ public class ControleurEcranDeFin {
 				e.printStackTrace();
 			}
 			
-			Partie partie = new Partie(new GridPane());
+			Partie partie = new Partie();
 			MainApp.jeu.setScene(partie);
 			MainApp.jeu.show();
 		}

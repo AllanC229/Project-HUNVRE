@@ -22,7 +22,7 @@ public class ControleurAccueil {
     private int direction;
     
     ArrayList<Integer> scores = new ArrayList<Integer>();
-    ArrayList<String> noms = new ArrayList<String>();
+    ArrayList<String> pseudos = new ArrayList<String>();
 
     public ControleurAccueil(int direction) {
         this.direction = direction;
@@ -44,7 +44,7 @@ public class ControleurAccueil {
             		Connection conn = dao.getConn();
             		conn.setAutoCommit(false);
 
-            		String sql = "SELECT nom, score FROM utilisateur ORDER BY score DESC LIMIT 5;";
+            		String sql = "SELECT pseudo, score FROM utilisateur ORDER BY score DESC LIMIT 5;";
             		
             		PreparedStatement psScore = conn.prepareStatement(sql);
             		
@@ -52,7 +52,7 @@ public class ControleurAccueil {
             		
             		while (rsScore.next()) {	
             			scores.add(rsScore.getInt("score"));
-            			noms.add(rsScore.getString("nom"));
+            			pseudos.add(rsScore.getString("pseudo"));
             			
             		}
             	}
@@ -61,8 +61,8 @@ public class ControleurAccueil {
             		} 
             		
             		dao.closeConnection();
-            		//TableauScore tableau = new TableauScore(new VBox(), noms, scores);
-                	MainApp.jeu.setScene(new TableauScore(new GridPane(), noms, scores));
+            		//TableauScore tableau = new TableauScore(new VBox(), pseudos, scores);
+                	MainApp.jeu.setScene(new TableauScore(new GridPane(), pseudos, scores));
                 	MainApp.jeu.show();
             		
         }            		

@@ -18,5 +18,8 @@ public class DeckJoueur {
 		Cartedejeu.getId();
 	}*/
 	
+	public void add(CarteJeu c) { // Surcharge de la méthode add() de ArrayList
+		this.deck.add(c);
+	}
 
 }

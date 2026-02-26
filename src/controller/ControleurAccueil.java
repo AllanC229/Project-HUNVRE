@@ -12,6 +12,7 @@ import connection.DAOAcces;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import view.Partie;
 import view.TableauScore;
 
 
@@ -31,6 +32,8 @@ public class ControleurAccueil {
         }
         if (direction == 2) {
             System.out.println("Vous lancez une nouvelle partie");
+            MainApp.jeu.setScene(new Partie());
+            MainApp.jeu.show();
         }
         if (direction == 3) {
             System.out.println("Vous êtes sur le tableau des scores");

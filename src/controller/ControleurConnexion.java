@@ -4,9 +4,10 @@ package controller;
 import java.sql.*;
 
 import app.MainApp;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import model.Utilisateur;
 import view.Accueil;
+import view.TableauScore;
 
 /**
  * Contrôleur de connexion : gère les actions depuis la vue Connexion.
@@ -27,6 +28,8 @@ public class ControleurConnexion {
             MainApp.jeu.show();
             // j = new Utilisateur (donnéees de la bdd)
             // TODO : si OK → afficher la vue Accueil
+            MainApp.jeu.setScene(new Accueil(new VBox()));
+        	MainApp.jeu.show();
         }
 
         // Bouton "creation" de la vue Connexion.java

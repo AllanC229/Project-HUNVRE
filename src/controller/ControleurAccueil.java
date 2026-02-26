@@ -35,7 +35,7 @@ public class ControleurAccueil {
         if (direction == 3) {
             System.out.println("Vous êtes sur le tableau des scores");
             
-            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
+            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); 
             	try {
             		
             		Connection conn = dao.getConn();

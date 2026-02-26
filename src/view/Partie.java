@@ -18,26 +18,21 @@ public class Partie extends Scene {
         GridPane partie = (GridPane) getRoot();
 		partie.setGridLinesVisible(true);
 		
-	int colonne = 3;
-	int ligne = 3;
+	ColumnConstraints c1 = new ColumnConstraints();
+	c1.setPercentWidth(15);
+	ColumnConstraints c2 = new ColumnConstraints();
+	c2.setPercentWidth(70);
+	ColumnConstraints c3 = new ColumnConstraints();
+	c3.setPercentWidth(15);
 	
-	for (int i = 0; i < colonne; i++) {
-		ColumnConstraints col = new ColumnConstraints();
-		col.setPercentWidth(100.0 / colonne);
-		partie.getColumnConstraints().add(col);
-	}
+	RowConstraints l1 = new RowConstraints();
+	l1.setPercentHeight(29);
+	RowConstraints l2 = new RowConstraints();
+	l2.setPercentHeight(42);
+	RowConstraints l3 = new RowConstraints();
+	l3.setPercentHeight(29);
 	
-	for (int i = 0; i < ligne; i++) {
-		RowConstraints lig = new RowConstraints();
-		lig.setPercentHeight(100.0 / ligne);
-		partie.getRowConstraints().add(lig);
-	}
-
-	for (int col = 0; col < ligne ; col++) {
-	    for (int lig = 0; ligne < colonne; lig++) {
-	        Pane cell = new Pane();
-	        partie.add(cell, col, lig);
-	    }
-	}
+	partie.getColumnConstraints().addAll(c1, c2, c3);
+	partie.getRowConstraints().addAll(l1, l2, l3);
 }
 }

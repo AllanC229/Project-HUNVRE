@@ -21,7 +21,7 @@ public class ControleurCreationCompte {
 
 
     		String strInsertNouveauCompte = "INSERT INTO acces "
-    										+ "(nom, mail, mdp) "
+    										+ "(pseudo, mail, mdp) "
     										+ "VALUES (?, ?, ?);";
 
     		// Création d'un PreparedStatement

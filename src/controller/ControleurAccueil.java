@@ -44,7 +44,7 @@ public class ControleurAccueil {
             		Connection conn = dao.getConn();
             		conn.setAutoCommit(false);
 
-            		String sql = "SELECT nom, score FROM utilisateur ORDER BY score DESC LIMIT 5;";
+            		String sql = "SELECT pseudo, score FROM utilisateur ORDER BY score DESC LIMIT 5;";
             		
             		PreparedStatement psScore = conn.prepareStatement(sql);
             		

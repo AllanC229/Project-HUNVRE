@@ -34,14 +34,14 @@ public class MainApp extends Application {
 		jeu = primaryStage;
 				
 		jeu.setTitle("HUNVRE");
-		Accueil accueil = new Accueil(new VBox());
+		/*Accueil accueil = new Accueil(new VBox());
 		jeu.setScene(accueil);
-		jeu.show();
+		jeu.show();*/
 		
-		/*Connexion connexion = new Connexion(new VBox());
+		Connexion connexion = new Connexion(new VBox());
 		
 		jeu.setScene(connexion);
-		jeu.show();*/
+		jeu.show();
 	}
 		
 }

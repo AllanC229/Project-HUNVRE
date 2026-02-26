@@ -34,7 +34,7 @@ public class ControleurAccueil {
         }
         if (direction == 3) {
             System.out.println("Vous êtes sur le tableau des scores");
-            //HashMap<String, Integer> scores = new HashMap<>();
+            
             DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
             	try {
             		

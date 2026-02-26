@@ -14,6 +14,7 @@ import view.TableauScore;
  * Reçoit un choix (1 = connexion, 2 = création de compte).
  */
 public class ControleurConnexion {
+	public static Utilisateur j ;
 
     public ControleurConnexion(int choix) {
 
@@ -21,6 +22,11 @@ public class ControleurConnexion {
         if (choix == 1) {
             System.out.println("totototototottatatatatatttttitititiititit");
             // TODO : comparer identifiant/mdp avec la BDD
+            Accueil accueil = new Accueil(new VBox());
+            
+            MainApp.jeu.setScene(accueil);
+            MainApp.jeu.show();
+            // j = new Utilisateur (donnéees de la bdd)
             // TODO : si OK → afficher la vue Accueil
             MainApp.jeu.setScene(new Accueil(new VBox()));
         	MainApp.jeu.show();
@@ -31,4 +37,5 @@ public class ControleurConnexion {
             // TODO : afficher la vue Création de Compte
         }
     }
+    
 }

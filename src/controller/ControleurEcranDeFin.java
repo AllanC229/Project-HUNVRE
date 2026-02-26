@@ -5,8 +5,12 @@ import java.sql.SQLException;
 
 import app.MainApp;
 import connection.DAOAcces;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import model.CarteJeu;
+import model.DeckJoueur;
 import view.Accueil;
+import view.Partie;
 
 public class ControleurEcranDeFin {
 	
@@ -18,12 +22,15 @@ public class ControleurEcranDeFin {
 			DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream");
 			try {
 				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
+				
+				ControleurConnexion.j.setDeck(new DeckJoueur());
+				
 				while(listeCarte.next()) {
-					/* Il faudra ajouter un objet deckJoueur en static dans ControleurAccueil
+					/* Il faudra ajouter un objet deckJoueur en static dans ControleurConnexion
 					 * pour pouvoir accéder à deckJoueur partout
 					 */
 					
-					ControleurAccueil.deckJoueur.add(new CarteJeu(
+					ControleurConnexion.j.getDeck().add(new CarteJeu(
 							listeCarte.getInt(1),
 							listeCarte.getInt(2),
 							listeCarte.getString(3),
@@ -35,11 +42,10 @@ public class ControleurEcranDeFin {
 				System.out.println("ControleurEcranDeFin - Ereur SQL");
 				e.printStackTrace();
 			}
-			/* Partie partie = new Partie(new VBox();
-			 * MainApp.jeu.setScene(partie);
-			 * MainApp.jeu.show();
-			 */
 			
+			Partie partie = new Partie(new GridPane());
+			MainApp.jeu.setScene(partie);
+			MainApp.jeu.show();
 		}
 		
 		if(direction == 2) {

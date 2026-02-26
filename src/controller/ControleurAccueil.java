@@ -20,8 +20,8 @@ public class ControleurAccueil {
 
     private int direction;
     
-    ArrayList scores = new ArrayList();
-    ArrayList noms = new ArrayList();
+    ArrayList<Integer> scores = new ArrayList<Integer>();
+    ArrayList<String> noms = new ArrayList<String>();
 
     public ControleurAccueil(int direction) {
         this.direction = direction;

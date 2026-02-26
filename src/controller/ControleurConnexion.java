@@ -3,11 +3,17 @@ package controller;
 // WIP (Work In Progress) : connexion BDD pas encore implémentée
 import java.sql.*;
 
+import app.MainApp;
+import javafx.scene.layout.VBox;
+import model.Utilisateur;
+import view.Accueil;
+
 /**
  * Contrôleur de connexion : gère les actions depuis la vue Connexion.
  * Reçoit un choix (1 = connexion, 2 = création de compte).
  */
 public class ControleurConnexion {
+	public static Utilisateur j ;
 
     public ControleurConnexion(int choix) {
 
@@ -15,6 +21,11 @@ public class ControleurConnexion {
         if (choix == 1) {
             System.out.println("totototototottatatatatatttttitititiititit");
             // TODO : comparer identifiant/mdp avec la BDD
+            Accueil accueil = new Accueil(new VBox());
+            
+            MainApp.jeu.setScene(accueil);
+            MainApp.jeu.show();
+            // j = new Utilisateur (donnéees de la bdd)
             // TODO : si OK → afficher la vue Accueil
         }
 
@@ -23,4 +34,5 @@ public class ControleurConnexion {
             // TODO : afficher la vue Création de Compte
         }
     }
+    
 }

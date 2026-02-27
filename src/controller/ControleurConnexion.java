@@ -7,6 +7,8 @@ import app.MainApp;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import view.CreationCompte;
+import model.Utilisateur;
+import view.Accueil;
 import view.TableauScore;
 
 /**
@@ -14,6 +16,7 @@ import view.TableauScore;
  * Reçoit un choix (1 = connexion, 2 = création de compte).
  */
 public class ControleurConnexion {
+	public static Utilisateur j ;
 
     public ControleurConnexion(int choix) {
 
@@ -22,6 +25,8 @@ public class ControleurConnexion {
             System.out.println("totototototottatatatatatttttitititiititit");
             // TODO : comparer identifiant/mdp avec la BDD
             // TODO : si OK → afficher la vue Accueil
+            MainApp.jeu.setScene(new Accueil(new VBox()));
+        	MainApp.jeu.show();
         }
 
         // Bouton "creation" de la vue Connexion.java
@@ -33,4 +38,5 @@ public class ControleurConnexion {
         	System.out.println("totototo");
         }
     }
+    
 }

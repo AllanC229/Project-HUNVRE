@@ -1,6 +1,5 @@
 package model;
 
-import connection.DAOAcces;
 
 public class Utilisateur {
 
@@ -10,8 +9,11 @@ public class Utilisateur {
 		private DeckJoueur deck;
 		private String role = "joueur"; 
 		
-		public Utilisateur(String pseudo, String mail, String mdp, DeckJoueur deck, String role, DAOAcces dao) {
-			
+		public Utilisateur(String pseudo, String mail, DeckJoueur deck, String role) {
+			this.pseudo = pseudo;
+			this.mail = mail;
+			this.deck = deck;
+			this.role = role;
 		}
 		
 		

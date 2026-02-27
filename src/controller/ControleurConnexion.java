@@ -6,6 +6,7 @@ import java.sql.*;
 import app.MainApp;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import view.CreationCompte;
 import model.Utilisateur;
 import view.Accueil;
 import view.TableauScore;
@@ -30,7 +31,11 @@ public class ControleurConnexion {
 
         // Bouton "creation" de la vue Connexion.java
         if (choix == 2) {
-            // TODO : afficher la vue Création de Compte
+            // Affiche la vue Création de Compte
+        	MainApp.jeu.setScene(new CreationCompte(new VBox()));
+        	MainApp.jeu.show();
+        	
+        	System.out.println("totototo");
         }
     }
     

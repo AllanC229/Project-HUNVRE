@@ -27,7 +27,7 @@ public class ControleurConnexion {
                 return;
             }
             // Vérification en BDD
-            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
+            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream");
             try {
                 PreparedStatement pst = dao.getConn().prepareStatement(
                     "SELECT * FROM utilisateur WHERE email = ? AND mdp = ?");

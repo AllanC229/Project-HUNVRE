@@ -20,20 +20,26 @@ public class EcranDeFin extends Scene {
 		 */
 		
 		if(perdu) {
-			Label lignePerdu1 = new Label("Perdu");
-			vbox.getChildren().add(lignePerdu1);
+			Label lignePerdu1 = new Label("Vous perdez le contrôle de la situation.");
+			Label lignePerdu2 = new Label("La forêt se déforme, les branches se tordent.");
+			Label lignePerdu3 = new Label("Le rêve s'assombrit.");
+			Label lignePerdu4 = new Label("Vous ne parvenez plus à vous mouvoir.");
+			Label lignePerdu5 = new Label("Le haut devient le bas, les couleurs s'échappent.");
+			Label lignePerdu6 = new Label("Vous vous réveillez brusquement, marqué-e par cette expérience...");
+
+			vbox.getChildren().addAll(lignePerdu1, lignePerdu2, lignePerdu3, lignePerdu4, lignePerdu5, lignePerdu6);
 		}
 		
 		else {			
-			Label message1 = new Label("Vous ouvrez les yeux dans votre rêve.");
-			Label message2 = new Label("Vous savez que vous rêvez.");
-			Label message3 = new Label("La métacognition est atteinte. Vous êtes lucide.");
-			Label message4 = new Label("Dans cet état de conscience onirique, tout est possible.");
-			Label message5 = new Label("Vous vous réveillez naurellement, enrichi de cette expérience...");
-			Label message6 = new Label("Cette capacité à prendre des décisions consciente dans vos rêves reflète votre pouvoir de choix dans la vie éveillée.");
-			Label message7 = new Label("Quel que soit votre niveau de conscience, vous êtes décisionnaire.");
+			Label ligneGagne1 = new Label("Vous ouvrez les yeux dans votre rêve.");
+			Label ligneGagne2 = new Label("Vous savez que vous rêvez.");
+			Label ligneGagne3 = new Label("La métacognition est atteinte. Vous êtes lucide.");
+			Label ligneGagne4 = new Label("Dans cet état de conscience onirique, tout est possible.");
+			Label ligneGagne5 = new Label("Vous vous réveillez naurellement, enrichi de cette expérience...");
+			Label ligneGagne6 = new Label("Cette capacité à prendre des décisions consciente dans vos rêves reflète votre pouvoir de choix dans la vie éveillée.");
+			Label ligneGagne7 = new Label("Quel que soit votre niveau de conscience, vous êtes décisionnaire.");
 			
-			vbox.getChildren().addAll(message1, message2, message3, message4, message5, message6, message7);
+			vbox.getChildren().addAll(ligneGagne1, ligneGagne2, ligneGagne3, ligneGagne4, ligneGagne5, ligneGagne6, ligneGagne7);
 		}
 		
 		Label scoreFinal = new Label("Score : " + score + "\n");

@@ -35,7 +35,7 @@ public class ControleurConnexion {
                 pst.setString(2, mdp);
                 ResultSet rs = pst.executeQuery();
                 if (rs.next()) {
-                    stage.setScene(new Accueil(new VBox()));
+                    stage.setScene(new Accueil(new VBox()));  //Il faudra rajouter la création d'une instance d'Utilisateur avec les infos récupérées depuis la base de données (rôle, deck, pseudo)
                 } else {
                     System.out.println("Identifiants incorrects !");
                     // TODO : afficher message d'erreur dans la vue
@@ -48,6 +48,11 @@ public class ControleurConnexion {
         }
         if (choix == 2) {
             stage.setScene(new CreationCompte(new VBox()));
+            // Affiche la vue Création de Compte
+        	MainApp.jeu.setScene(new CreationCompte(new VBox()));
+        	MainApp.jeu.show();
+        	
+        	System.out.println("totototo");
         }
     }
 }

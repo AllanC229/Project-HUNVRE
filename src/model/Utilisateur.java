@@ -5,6 +5,7 @@ public class Utilisateur {
 
 		private String pseudo;
 		private String mail;
+		private String mdp;
 		private DeckJoueur deck;
 		private String role = "joueur"; 
 		
@@ -28,6 +29,10 @@ public class Utilisateur {
 		public void setMail(String mail) {
 			this.mail = mail;
 		}
+		
+		//set et get pour mdp?? -pauline
+		
+		
 		public DeckJoueur getDeck() {
 			return deck;
 		}

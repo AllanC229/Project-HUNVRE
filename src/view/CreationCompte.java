@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class CreationCompte extends Scene {
 
@@ -16,35 +17,36 @@ public class CreationCompte extends Scene {
 		super(form, 800, 600);
 		
 		 // Création des labels du formulaire d'inscription
-        Label nomLabel = new Label("Nom :");
-        Label mailLabel = new Label("Mail :");
-        Label mdpLabel = new Label("Mot de passe :");
+        Label pseudoLabel = new Label("Pseudo :*");
+        Label mailLabel = new Label("Mail :*");
+        Label mdpLabel = new Label("Mot de passe :*");
+        Label confirmMdpLabel = new Label("Confirmer le mot de passe :*");
 
         // Création des champs textes
-        TextField nomChamps = new TextField();
+        TextField pseudoChamps = new TextField();
         TextField mailChamps = new TextField();
         PasswordField mdpChamps = new PasswordField();
+        PasswordField confirmMdpChamps = new PasswordField();
         
-        // Phrase de confirmation
-        Label resultLabel = new Label();
+        // Phrase de confirmation ou d'erreurs
+        Label confirmationLabel = new Label();
+        
+        Label champsRequisLabel = new Label("*champs obligatoires");
+        champsRequisLabel.setTextFill(Color.RED);
 
-        // Create a "Login" button.
-        Button creerButton = new Button("Créer le compte");
+        
+        Button soumettreBouton = new Button("Créer le compte");
 
-        // Set an action for the "Login" button to validate the credentials.
-        creerButton.setOnAction(event -> {
-            String nomInsere = nomChamps.getText();
+        // Lors du clic sur le bouton selon les conditions instancie le controleurCreationCompte
+        	soumettreBouton.setOnAction(event -> {
+            String pseudoInsere = pseudoChamps.getText();
             String mailInsere = mailChamps.getText();
             String mdpInsere = mdpChamps.getText();
+            String confirmMdpInsere = confirmMdpChamps.getText();
 
+    		new ControleurCreationCompte(pseudoInsere, mailInsere, mdpInsere, confirmMdpInsere);
+        	System.out.println("controleurCreatioCompte instancié!");
 
-            if (nomInsere !="" && mailInsere !="" && mdpInsere !="" ) {
-                new ControleurCreationCompte(nomInsere, mailInsere, mdpInsere);
-            	
-            	System.out.println("controleurCreatioCompte instancié!");
-            } else {
-                resultLabel.setText("Veuillez remplir tout les champs");
-            }
         });
 		
 		
@@ -56,11 +58,13 @@ public class CreationCompte extends Scene {
         
         form.setPadding(new Insets(25, 25, 25, 25));
         
-        form.getChildren().addAll(nomLabel, nomChamps, mailLabel, mailChamps, mdpLabel, mdpChamps, creerButton, resultLabel);
+        form.getChildren().addAll(pseudoLabel, pseudoChamps, mailLabel, mailChamps, mdpLabel, mdpChamps, confirmMdpLabel, 
+        		confirmMdpChamps, soumettreBouton, confirmationLabel, champsRequisLabel);
 
-        nomChamps.setMaxWidth(150);
+        pseudoChamps.setMaxWidth(150);
         mailChamps.setMaxWidth(150);
         mdpChamps.setMaxWidth(150);
+        confirmMdpChamps.setMaxWidth(150);
 		
 	}
 

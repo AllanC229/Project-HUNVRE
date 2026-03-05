@@ -46,6 +46,11 @@ public class CarteJeu {
 		public void setCouleur(String couleur) {
 			this.couleur = couleur;
 		}
+		/*public CarteJeu tirage() {
+			
+			
+			return CarteJeu;
+		}*/
 }
 
 

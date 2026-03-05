@@ -28,18 +28,17 @@ public class ZoneMenu extends Pane {
 			Label test = new Label("Test");
 			Button bquitter = new Button("Quitter");
 			
+			VBox vboxoptions = new VBox();
+			vboxoptions.getChildren().addAll(test, bquitter);
+			vboxoptions.setAlignment(Pos.CENTER);
 			
-			VBox vboxtest = new VBox();
-			vboxtest.getChildren().addAll(test, bquitter);
-			vboxtest.setAlignment(Pos.CENTER);
-			
-			Scene scenetest = new Scene(vboxtest, 200, 100);
-			Stage stagetest = new Stage();
-			stagetest.setTitle("fenetre de test");
-			stagetest.setScene(scenetest);
+			Scene scenetest = new Scene(vboxoptions, 200, 100);
+			Stage stageoptions = new Stage();
+			stageoptions.setTitle("fenetre de test");
+			stageoptions.setScene(scenetest);
 			
 			Stage stage = (Stage) boptions.getScene().getWindow();
-			stagetest.initOwner(stage);
+			stageoptions.initOwner(stage);
 			
 			bquitter.setOnAction(f -> {
 				System.out.println("bquitter cliqué, version fenêtre");
@@ -59,72 +58,12 @@ public class ZoneMenu extends Pane {
 				}
 			});
 			
-			
-			stagetest.show();
+			stageoptions.show();
 		});
-		
-		/*
-		boptions.setOnAction(e -> {
-			
-			
-			
-			System.out.println("boptions cliqué");
-			
-			Alert options = new Alert(Alert.AlertType.CONFIRMATION);
-			options.setTitle("Options");
-			options.setHeaderText(null);
-			
-			Stage stage = (Stage) boptions.getScene().getWindow();
-			options.initOwner(stage);
-			ButtonType bquitter = new ButtonType("Quitter");
-			ButtonType breprendre = new ButtonType("Reprendre", ButtonData.CANCEL_CLOSE);
-			
-			options.getButtonTypes().setAll(bquitter, breprendre);
-			
-			
-			Optional<ButtonType> choix = options.showAndWait();
-			if(choix.get() == bquitter) {
-				Alert quitter = new Alert(Alert.AlertType.CONFIRMATION,
-						"Voulez-vous vraiment quitter ?",
-						ButtonType.YES,
-						ButtonType.NO);
-				
-				quitter.setTitle("Vous allez quitter le jeu");
-				quitter.setHeaderText(null);
-				quitter.initOwner(stage);
-				
-				if(quitter.showAndWait().get() == ButtonType.YES) Platform.exit();
-				
-			}
-		});
-		*/
 		
 		this.getChildren().add(boptions);
 		
-		/*
-		Button bquitter = new Button("Quitter");
-		VBox.setMargin(bquitter, new Insets(50, 0, 0, 0));
-		bquitter.setOnAction(e -> { 
-			System.out.println("bquitter cliqué");
-		
-			Alert alerte = new Alert(Alert.AlertType.CONFIRMATION,	//petite fenetre qui demande confirmation
-		        "Voulez-vous vraiment quitter ?",
-		        ButtonType.YES,
-		        ButtonType.NO);
 
-			alerte.setTitle("Vous allez quitter le jeu");
-			alerte.setHeaderText(null);
-			
-			Stage stage = (Stage) bquitter.getScene().getWindow();
-		    alerte.initOwner(stage);
-
-			if (alerte.showAndWait().get() == ButtonType.YES) {		//si on clique oui sur la fenetre
-			    Platform.exit();	//ferme l'application
-			}
-		});
-		 
-		this.getChildren().add(bquitter);
-		*/
 		
 	}
 

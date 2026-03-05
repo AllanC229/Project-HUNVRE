@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
+import app.MainApp;
 import connection.DAOAcces;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import model.DeckJoueur;
 import model.Utilisateur;
 import view.CreationCompte;
 
@@ -18,19 +21,23 @@ public class ControleurCreationCompte {
 	String mail ;
 	String mdp ;
 	String confirmMdp ;
+	String role;
+	CreationCompte vueErreurMail;
 	
 	
-	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp) {
+	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur) {
 		
 		this.pseudo = pseudo;
 		this.mail = mail;
 		this.mdp = mdp;
 		this.confirmMdp = confirmMdp;
+		this.role = role;
 		
 		// Vérification que le mail est construit comme ceci : lettres/chiffres + @ + des lettres/chiffres + des lettres
 	    String mailCheck = mail ;
 	    String regexPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-		
+	    
+	    
         if (!pseudo.equals("") && !mail.equals("") && !mdp.equals("") && patternMatches(mailCheck, regexPattern)) {
         	
         		if (mdp.equals(confirmMdp)) {         		
@@ -41,30 +48,51 @@ public class ControleurCreationCompte {
         	    		
         	    		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
         	    		
-        	    		Connection conn = dao.getConn();
-        	    	//	conn.setAutoCommit(false); ???
+        	      		// vérification si le mail du formualire n'existe pas déjà dans la BDD
+        	    		String verifMail = "SELECT mail "
+        	    						  + "FROM utilisateur;";
+        	    		
+        	    		PreparedStatement pstVerifMail = dao.getConn().prepareStatement(verifMail);
+        	    		
+        	    		ResultSet rsVerifMail = pstVerifMail.executeQuery();
+        	    		
+        	    		boolean flag = false; // flag = false veut dire, le mail existe pas par défaut en BDD
+        	    		
+    	    			// Vérifier si le mail inséré existe déjà en BD
+        	    		while (rsVerifMail.next()){
+	        	    		if (mail.equals(rsVerifMail.getString("mail"))) {
+	        	    			flag = true ;
+	        	    			System.out.println("le mail existe déjà");
+	        	    			// CreationCompte erreur = new CreationCompte(new VBox());
+	        	        		String message = "Le mail existe déjà";
+	        	               // erreur.ajouterMessage(message);
+	        	        		vueErreur.ajouterMessage(message);
+	        	        	}
+        	    		}
+        	    		
+        	    		if (flag == false) {
+        	    		String strInsertNouveauCompte = "INSERT INTO utilisateur "
+        	    										+ "(pseudo, mdp, mail, role) "
+        	    										+ "VALUES (?, ?, ?, ?);";
 
-        	    		// if (email existe pas déjà)
-        	    		String strInsertNouveauCompte = "INSERT INTO utilisateur, deck_carte "
-        	    										+ "(pseudo, mail, mdp, , role) "
-        	    										+ "VALUES (?, ?, ?, ?, ?);";
-
-        	    		// Création d'un PreparedStatement
-        	    		PreparedStatement pstNouveauCompte = conn.prepareStatement(strInsertNouveauCompte);
+        	    		// Création d'une requête préparée
+        	    		PreparedStatement pstNouveauCompte = dao.getConn().prepareStatement(strInsertNouveauCompte);
         	    		
         	    		pstNouveauCompte.setString(1, pseudo);
-        	    		pstNouveauCompte.setString(2, mail);
-        	    		pstNouveauCompte.setString(3, mdp);
-        	    		pstNouveauCompte.setString(4, deck);
-        	    		pstNouveauCompte.setString(5, role);
+        	    		pstNouveauCompte.setString(2, mdp);
+        	    		pstNouveauCompte.setString(3, mail);
+        	    		pstNouveauCompte.setString(4, role);
 
+        	    		pstNouveauCompte.execute();
+        	    	        	    		
         	    		
-        	    		if(pstNouveauCompte.execute()) {
-        	    			Utilisateur nouveauUtilisateur = new Utilisateur(pseudo, mail, deck, role, dao);
+        	    		//la requête est exécutée => instanciation Utilisateur
+            	    	System.out.println("requête exécutée, nouvel utilisateur instancié");
+        	    		MainApp.utilisateur = new Utilisateur(pseudo, mail, new DeckJoueur(), role); 
+        	    		new ControleurConnexion(1); // renvoie vers l'accueil
+        	           	    		
         	    		}
-
-        	    		
-        	    		conn.close();
+        	    		dao.closeConnection();
 
         	    	
         	    	} catch (SQLException e) {
@@ -74,24 +102,20 @@ public class ControleurCreationCompte {
 
         		
         		} else {
-                // TO DO Afficher l'erreur de correspondance des mdp
-        		new CreationCompte(new VBox());
-        		
-                //confirmationLabel.setText("Les mots de passe ne correspondent pas");
-                //confirmationLabel.setTextFill(Color.RED);
-        		System.out.println("les mdp ne correspondent pas");
+        	        // Afficher l'erreur de correspondance des mdp
+        			String message = "Les mots de passe ne correspondent pas";
+        			vueErreur.ajouterMessage(message);
+        			System.out.println("les mdp ne correspondent pas");
         		}
         
+        } else {
+    	    // Afficher l'erreur de saisie
+    		String message = "Veuillez remplir tout les champs";
+    		vueErreur.ajouterMessage(message);
+    		System.out.println("tout les champs ne sont pas remplis");
+        }
 
-        	} else {
-            // TO DO Afficher l'erreur de saisie
-        	//confirmationLabel.setText("Veuillez remplir tout les champs");
-            //confirmationLabel.setTextFill(Color.RED);
-        	System.out.println("tout les champs ne sont pas remplis");
-
-        	}	
-		
-    	}
+    }
 
 	public boolean patternMatches(String emailAddress, String regexPattern) {
 	    return Pattern.compile(regexPattern)

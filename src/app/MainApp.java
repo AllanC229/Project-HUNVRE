@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Utilisateur;
 import view.Accueil;
 import view.Connexion;
 
@@ -23,6 +24,8 @@ import view.Connexion;
 
 public class MainApp extends Application {
 	public static Stage jeu;
+	
+	public static Utilisateur utilisateur ;
 	
 	
 	public static void main(String[] args) {

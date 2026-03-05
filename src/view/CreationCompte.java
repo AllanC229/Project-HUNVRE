@@ -1,5 +1,6 @@
 package view;
 
+import app.MainApp;
 import controller.ControleurCreationCompte;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,9 +14,14 @@ import javafx.scene.paint.Color;
 
 public class CreationCompte extends Scene {
 
+	VBox vbox;
+	
 	public CreationCompte(VBox form) {
+	 
 		super(form, 800, 600);
-		
+		vbox = new VBox();
+		super.setRoot(vbox);
+
 		 // Création des labels du formulaire d'inscription
         Label pseudoLabel = new Label("Pseudo :*");
         Label mailLabel = new Label("Mail :*");
@@ -33,7 +39,6 @@ public class CreationCompte extends Scene {
         
         Label champsRequisLabel = new Label("*champs obligatoires");
         champsRequisLabel.setTextFill(Color.RED);
-
         
         Button soumettreBouton = new Button("Créer le compte");
 
@@ -44,21 +49,18 @@ public class CreationCompte extends Scene {
             String mdpInsere = mdpChamps.getText();
             String confirmMdpInsere = confirmMdpChamps.getText();
 
-    		new ControleurCreationCompte(pseudoInsere, mailInsere, mdpInsere, confirmMdpInsere);
-        	System.out.println("controleurCreatioCompte instancié!");
-
+    		new ControleurCreationCompte(pseudoInsere, mailInsere, mdpInsere, confirmMdpInsere, "joueur", this);
+        	System.out.println("controleurCreationCompte instancié!");
         });
 		
 		
+        vbox.setAlignment(Pos.CENTER);
 		
-		// VBox form = new VBox();
-	    form.setAlignment(Pos.CENTER);
-		
-	    VBox.setMargin(form, new Insets(10.0d) );
+	    VBox.setMargin(vbox, new Insets(10.0d) );
         
-        form.setPadding(new Insets(25, 25, 25, 25));
+	    vbox.setPadding(new Insets(25, 25, 25, 25));
         
-        form.getChildren().addAll(pseudoLabel, pseudoChamps, mailLabel, mailChamps, mdpLabel, mdpChamps, confirmMdpLabel, 
+	    vbox.getChildren().addAll(pseudoLabel, pseudoChamps, mailLabel, mailChamps, mdpLabel, mdpChamps, confirmMdpLabel, 
         		confirmMdpChamps, soumettreBouton, confirmationLabel, champsRequisLabel);
 
         pseudoChamps.setMaxWidth(150);
@@ -68,5 +70,16 @@ public class CreationCompte extends Scene {
 		
 	}
 
-
+	public void ajouterMessage(String message) {
+		Label erreur = new Label(message);
+		erreur.setTextFill(Color.RED);
+		this.vbox.getChildren().add(erreur);
+		MainApp.jeu.show();
+		System.out.println("la méthode ajouterMessage marche");
+	}
+	
+	
 }
+
+
+

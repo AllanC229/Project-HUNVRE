@@ -30,7 +30,7 @@ public class ControleurConnexion {
             DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream");
             try {
                 PreparedStatement pst = dao.getConn().prepareStatement(
-                    "SELECT * FROM utilisateur WHERE mail = ? AND mdp = ?");
+                    "SELECT * FROM utilisateur WHERE email = ? AND mdp = ?");
                 pst.setString(1, identifiant);
                 pst.setString(2, mdp);
                 ResultSet rs = pst.executeQuery();

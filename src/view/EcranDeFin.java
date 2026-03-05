@@ -14,9 +14,10 @@ public class EcranDeFin extends Scene {
 		super(vbox, 800, 600);
 		
 		int score = 300;
-		/* Récupération du score du joueur
+		/* Il faudra récupérer le score du joueur à la place de cette variable score
+		 * qui n'est ici que temporairement
 		 * 
-		 * int score = joueur.getScore();
+		 * int score = ControleurConnexion.j.getScore();
 		 */
 		
 		if(perdu) {

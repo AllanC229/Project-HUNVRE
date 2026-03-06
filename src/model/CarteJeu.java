@@ -4,11 +4,11 @@ public class CarteJeu {
 
 		private int id;
 		private int valeurbase;
-		private String recto;
-		private String verso;
+		private int recto;
+		private int verso;
 		private String couleur;
 		
-		public CarteJeu(int id, int valeurbase, String recto, String verso, String couleur) {
+		public CarteJeu(int id, int valeurbase, int recto, int verso, String couleur) {
 			this.id = id;
 			this.valeurbase = valeurbase;
 			this.recto = recto;
@@ -28,16 +28,16 @@ public class CarteJeu {
 		public void setValeur(int valeurbase) {
 			this.valeurbase = valeurbase;
 		}
-		public String getRecto() {
+		public int getRecto() {
 			return recto;
 		}
-		public void setRecto(String recto) {
+		public void setRecto(int recto) {
 			this.recto = recto;
 		}
-		public String getVerso() {
+		public int getVerso() {
 			return verso;
 		}
-		public void Verso(String verso) {
+		public void Verso(int verso) {
 			this.verso = verso;
 		}
 		public String getCouleur() {

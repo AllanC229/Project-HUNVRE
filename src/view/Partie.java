@@ -51,7 +51,8 @@ public class Partie extends Scene {
 	partie.getColumnConstraints().addAll(c1, c2, c3);  //On ajoute le quadrillage ainsi défini au GridPane "partie"
 	partie.getRowConstraints().addAll(l1, l2, l3);
 	
-	partie.add(new ZoneTitre(), 0, 0, 3, 1);
+	
+	partie.add(new ZoneTitre(),0, 0, 3, 1);
 	
 	partie.add(new ZoneMenu(), 0, 0);
 	
@@ -64,9 +65,6 @@ public class Partie extends Scene {
 	partie.add(new ZoneMain(), 1, 2);	
 	
 	partie.add(new ZoneDeck(), 2, 2);
-	
-	
-
 	
 }
 }

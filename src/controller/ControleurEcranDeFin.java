@@ -23,18 +23,15 @@ public class ControleurEcranDeFin {
 			try {
 				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
 				
-				ControleurConnexion.j.setDeck(new DeckJoueur());
+				// Création d'un nouveau deck avant de lancer la nouvelle partie
+				ControleurConnexion.joueur.setDeck(new DeckJoueur());
 				
-				while(listeCarte.next()) {
-					/* Il faudra ajouter un objet deckJoueur en static dans ControleurConnexion
-					 * pour pouvoir accéder à deckJoueur partout
-					 */
-					
-					ControleurConnexion.j.getDeck().add(new CarteJeu(
+				while(listeCarte.next()) {	
+					ControleurConnexion.joueur.getDeck().add(new CarteJeu(
 							listeCarte.getInt(1),
 							listeCarte.getInt(2),
 							listeCarte.getString(3),
-							"01",
+							1,
 							listeCarte.getString(4)));
 				}
 			}
@@ -42,6 +39,7 @@ public class ControleurEcranDeFin {
 				System.out.println("ControleurEcranDeFin - Ereur SQL");
 				e.printStackTrace();
 			}
+			dao.closeConnection();
 			
 			Partie partie = new Partie();
 			MainApp.jeu.setScene(partie);

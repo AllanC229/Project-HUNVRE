@@ -61,7 +61,7 @@ public class ZoneMain extends Pane {
 	List<CarteJeu> deck = new ArrayList<>(); //On instancie une entité deck
 
 	
-	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); //Début de la requête SQL qui va chercher toutes la cartes dans la BDD
+	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); //Début de la requête SQL qui va chercher toutes la cartes dans la BDD
 	   	try {
 	   		
 	   		Connection conn = dao.getConn();
@@ -77,7 +77,7 @@ public class ZoneMain extends Pane {
 	   			
 	   			deck.add(new CarteJeu(rsDeck.getInt("id_carte"), 	//On remplit notre deck avec des instances de CarteJeu
 	   								  rsDeck.getInt("valeur"), 
-	   								  rsDeck.getInt("recto"), 
+	   								  rsDeck.getString("recto"), 
 	   								  rsDeck.getInt("ref_visuel"), 
 	   								  rsDeck.getString("couleur")));   			
 	   		}

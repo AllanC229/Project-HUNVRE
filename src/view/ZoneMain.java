@@ -15,6 +15,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import controller.ControleurConnexion;
+import javafx.scene.control.Button;
 import model.CarteJeu;
 import model.DeckJoueur;
 
@@ -26,6 +29,27 @@ public class ZoneMain extends Pane {
 	
 	Label test = new Label("hunvre");
 	this.getChildren().add(test);
+	
+	// Début code Vitally - Boutons Jouer et Bouton Jeter
+	
+		// 	--- Boutons ---
+		Button jouer = new Button("Jouer");
+		Button jeter = new Button("Jeter");
+		     
+		// --- Taille max des composants ---
+		jouer.setMaxWidth(200);
+		jeter.setMaxWidth(200);
+		
+		// --- Événements ---
+        jouer.setOnAction(e -> {
+            // à écrire
+        });
+
+        jeter.setOnAction(e -> {
+        	// à écrire
+        });
+
+ 	// Fin code Vitally - Boutons Jouer et Bouton Jeter
 
 	
 	//Debut code d'Allan

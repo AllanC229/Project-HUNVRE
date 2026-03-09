@@ -11,6 +11,7 @@ import connection.DAOAcces;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.DeckJoueur;
 import model.Utilisateur;
 import view.CreationCompte;
@@ -25,7 +26,7 @@ public class ControleurCreationCompte {
 	CreationCompte vueErreurMail;
 	
 	
-	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur) {
+	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur, Stage stage) {
 		
 		this.pseudo = pseudo;
 		this.mail = mail;
@@ -49,7 +50,7 @@ public class ControleurCreationCompte {
         	    		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); 
         	    		
         	      		// vérification si le mail du formualire n'existe pas déjà dans la BDD
-        	    		String verifMail = "SELECT mail "
+        	    		String verifMail = "SELECT email "
         	    						  + "FROM utilisateur;";
         	    		
         	    		PreparedStatement pstVerifMail = dao.getConn().prepareStatement(verifMail);
@@ -60,7 +61,7 @@ public class ControleurCreationCompte {
         	    		
     	    			// Vérifier si le mail inséré existe déjà en BD
         	    		while (rsVerifMail.next()){
-	        	    		if (mail.equals(rsVerifMail.getString("mail"))) {
+	        	    		if (mail.equals(rsVerifMail.getString("email"))) {
 	        	    			flag = true ;
 	        	    			System.out.println("le mail existe déjà");
 	        	    			// CreationCompte erreur = new CreationCompte(new VBox());
@@ -72,7 +73,7 @@ public class ControleurCreationCompte {
         	    		
         	    		if (flag == false) {
         	    		String strInsertNouveauCompte = "INSERT INTO utilisateur "
-        	    										+ "(pseudo, mdp, mail, role) "
+        	    										+ "(pseudo, mdp, email, role) "
         	    										+ "VALUES (?, ?, ?, ?);";
 
         	    		// Création d'une requête préparée
@@ -89,7 +90,7 @@ public class ControleurCreationCompte {
         	    		//la requête est exécutée => instanciation Utilisateur
             	    	System.out.println("requête exécutée, nouvel utilisateur instancié");
         	    		MainApp.utilisateur = new Utilisateur(pseudo, mail, new DeckJoueur(), role); 
-        	    		new ControleurConnexion(1); // renvoie vers l'accueil
+        	    		new ControleurConnexion(1, mail, mdp, stage); // renvoie vers l'accueil
         	           	    		
         	    		}
         	    		dao.closeConnection();

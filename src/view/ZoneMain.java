@@ -34,17 +34,16 @@ public class ZoneMain extends Pane {
 	
 	//DeckJoueur deck = new DeckJoueur();
 
-	List<CarteJeu> deck = new ArrayList<>();
-	ArrayList cartestirees = new ArrayList<>();
+	List<CarteJeu> deck = new ArrayList<>(); //On instancie une entité deck
 
 	
-	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
+	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); //Début de la requête SQL qui va chercher toutes la cartes dans la BDD
 	   	try {
 	   		
 	   		Connection conn = dao.getConn();
 	   		conn.setAutoCommit(false);
 
-	   		String sql = "SELECT * FROM carte;";
+	   		String sql = "SELECT * FROM carte;";	//On prend toutes les cartes de la table carte
 	   		
 	   		PreparedStatement psDeck = conn.prepareStatement(sql);
 	   		
@@ -52,7 +51,7 @@ public class ZoneMain extends Pane {
 	   		
 	   		while (rsDeck.next()) {	 
 	   			
-	   			deck.add(new CarteJeu(rsDeck.getInt("id_carte"), 
+	   			deck.add(new CarteJeu(rsDeck.getInt("id_carte"), 	//On remplit notre deck avec des instances de CarteJeu
 	   								  rsDeck.getInt("valeur"), 
 	   								  rsDeck.getInt("recto"), 
 	   								  rsDeck.getInt("ref_visuel"), 
@@ -63,13 +62,13 @@ public class ZoneMain extends Pane {
 	   			e1.printStackTrace();
 	   		} 
 	   		
-	   		dao.closeConnection();
+	   		dao.closeConnection();	//On ferme la connexion
 	
 	
 
-	Collections.shuffle(deck);
+	Collections.shuffle(deck);	//Mélange aléatoirement les cartes du deck : notre entité deck contient maintenant les CarteJeu dans un ordre aléatoire
 	
-	mainCartes = new HBox();
+	mainCartes = new HBox(); //Lignes 72 à 79 : on définit les parametres de la HBox qui contiendra l'affichage de nos cartes
 	mainCartes.setSpacing(10);
 	mainCartes.setAlignment(Pos.CENTER);
 	
@@ -77,29 +76,63 @@ public class ZoneMain extends Pane {
 	mainCartes.setLayoutY(20);
 	
 	this.getChildren().add(mainCartes);
+	
+	List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees
+	
+	for (int i = 0; i < 8; i++) {	//On rentre dans la boucle qui fait le tirage
 
-	for (int i= 0; i <= 7; i++) {
-	System.out.println(deck.get(i).getCouleur()); // tirage
-	cartestirees.add(deck.get(i).getId());
-	Image image = new Image(getClass().getResourceAsStream("/"+ deck.get(i).getId() +".jpg"));
-	ImageView carte = new ImageView(image);
+	    CarteJeu cartejeu = deck.get(i);	//On récupère l'objet CarteJeu qui se trouve dans deck à la position i
+
+	    Image image = new Image(getClass().getResourceAsStream("/" + cartejeu.getId() + ".jpg")); //On récupère l'image recto associée à la carte
+	    ImageView carte = new ImageView(image);				//Et on crée une ImageView qui s'appelle carte avec l'image qu'on à récupérée									
+
+	    carte.setFitWidth(80);
+	    carte.setPreserveRatio(true);
+
+	    // association image -> objet
+	    carte.setUserData(cartejeu);	//TRES IMPORTANT : ici on associe l'ImageView carte avec l'instance de l'objet cartejeu ; c'est ce qui va nous permettre plus loin de récupérer ces objets quand on va choisir la carte en cliquant dessus
+
+	    carte.setOnMouseEntered(e -> carte.setTranslateY(-10));		//Suréleve la carte quand on passe la souris dessus
+	    carte.setOnMouseExited(e -> {
+	      
+	    	if (!cartesSelectionnees.contains(carte.getUserData())) { 	//La redescends quand on retire la souris SI on n'a pas cliqué sur la carte
+	            carte.setTranslateY(0);
+	        }
+	    });
+
+	    carte.setOnMouseClicked(e -> {		//Au clic sur la carte
+
+	        ImageView source = (ImageView) e.getSource();
+	        CarteJeu cartecliquee = (CarteJeu) source.getUserData();	//On crée une cartecliquee en dupliquant l'objet qu'on a associé à l'image
+
+	        
+	        if (cartesSelectionnees.contains(cartecliquee)) {	//Si le tableau cartesselectionnee contient déja cette carte
+
+	            cartesSelectionnees.remove(cartecliquee);	//On la supprime du tableau (déselection)
+	            source.setTranslateY(0);
+	            source.setStyle("");
+
+	        }
+	       
+	        else if (cartesSelectionnees.size() < 5) {	//Si le tableau ne contient pas la carte (elseif) on vérifie qu'on a bien selectionné moins de 6 cartes
+
+	            cartesSelectionnees.add(cartecliquee); 	//S oui, on ajoute la carte au tableau
+
+	               
+	            source.setStyle("-fx-effect: dropshadow(gaussian, purple, 10, 0.5, 0, 0);");	//Un petit effet pour indiquer que la carte est selectionnée
+
+	        }
+
+	        System.out.println("Cartes sélectionnées : " + cartesSelectionnees.size());
+	    });
+
+	    mainCartes.getChildren().add(carte); 	//Une fois qu'on a défini tout ça pour UNE carte, on l'ajoute à la HBox mainCartes
+	}	//Fin de la boucle
 	
-	carte.setFitWidth(80);     
-    carte.setPreserveRatio(true);
-    
-    carte.setOnMouseEntered(e -> carte.setTranslateY(-10));
-    carte.setOnMouseExited(e -> carte.setTranslateY(0));
-    
-   /* carte.setOnAction(e -> {
-    	cartechoisies.add(carte.getId());   	
-    });*/
-    
-    
-	mainCartes.getChildren().add(carte);
 	
-	}
+}
 	
 	//Fin code d'Allan
 
 }
-}
+

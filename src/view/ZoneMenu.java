@@ -69,7 +69,7 @@ public class ZoneMenu extends Pane {
 					}
 					
 					PreparedStatement pstSauvegarde = dao.getConn().prepareStatement(
-							"SELECT id_utilisateur FROM utilisateur WHERE email = ?");
+							"SELECT id_utilisateur FROM utilisateur WHERE mail = ?");
 					pstSauvegarde.setString(1, ControleurConnexion.joueur.getMail());
 					ResultSet rsSauvegarde = pstSauvegarde.executeQuery();
 					while(rsSauvegarde.next()) {

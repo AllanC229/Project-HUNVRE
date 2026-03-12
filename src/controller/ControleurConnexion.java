@@ -32,12 +32,12 @@ public class ControleurConnexion {
             DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
             try {
                 PreparedStatement pst = dao.getConn().prepareStatement(
-                    "SELECT * FROM utilisateur WHERE email = ? AND mdp = ?");
+                    "SELECT * FROM utilisateur WHERE mail = ? AND mdp = ?");
                 pst.setString(1, identifiant);
                 pst.setString(2, mdp);
                 ResultSet rs = pst.executeQuery();
                 if (rs.next()) {
-                	joueur = new Utilisateur(rs.getString("pseudo"), rs.getString("email"), new DeckJoueur(), rs.getString("role"));
+                	joueur = new Utilisateur(rs.getString("pseudo"), rs.getString("mail"), new DeckJoueur(), rs.getString("role"));
                 	// Récupération du deck sauvegardé
                 	// Pour l'instant il n'y a pas de bouton pour reprendre une partie
                 	try {

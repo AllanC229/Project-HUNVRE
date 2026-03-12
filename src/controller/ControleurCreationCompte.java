@@ -50,7 +50,7 @@ public class ControleurCreationCompte {
         	    		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); 
         	    		
         	      		// vérification si le mail du formualire n'existe pas déjà dans la BDD
-        	    		String verifMail = "SELECT email "
+        	    		String verifMail = "SELECT mail "
         	    						  + "FROM utilisateur;";
         	    		
         	    		PreparedStatement pstVerifMail = dao.getConn().prepareStatement(verifMail);
@@ -61,7 +61,7 @@ public class ControleurCreationCompte {
         	    		
     	    			// Vérifier si le mail inséré existe déjà en BD
         	    		while (rsVerifMail.next()){
-	        	    		if (mail.equals(rsVerifMail.getString("email"))) {
+	        	    		if (mail.equals(rsVerifMail.getString("mail"))) {
 	        	    			flag = true ;
 	        	    			System.out.println("le mail existe déjà");
 	        	    			// CreationCompte erreur = new CreationCompte(new VBox());
@@ -73,7 +73,7 @@ public class ControleurCreationCompte {
         	    		
         	    		if (flag == false) {
         	    		String strInsertNouveauCompte = "INSERT INTO utilisateur "
-        	    										+ "(pseudo, mdp, email, role) "
+        	    										+ "(pseudo, mdp, mail, role) "
         	    										+ "VALUES (?, ?, ?, ?);";
 
         	    		// Création d'une requête préparée
@@ -118,9 +118,9 @@ public class ControleurCreationCompte {
 
     }
 
-	public boolean patternMatches(String emailAddress, String regexPattern) {
+	public boolean patternMatches(String mailAddress, String regexPattern) {
 	    return Pattern.compile(regexPattern)
-	      .matcher(emailAddress)
+	      .matcher(mailAddress)
 	      .matches();
 	}
 	

@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class CreationCompte extends Scene {
 
@@ -48,8 +49,9 @@ public class CreationCompte extends Scene {
             String mailInsere = mailChamps.getText();
             String mdpInsere = mdpChamps.getText();
             String confirmMdpInsere = confirmMdpChamps.getText();
-
-    		new ControleurCreationCompte(pseudoInsere, mailInsere, mdpInsere, confirmMdpInsere, "joueur", this);
+            
+            Stage stage = (Stage) soumettreBouton.getScene().getWindow();
+    		new ControleurCreationCompte(pseudoInsere, mailInsere, mdpInsere, confirmMdpInsere, "joueur", this,stage);
         	System.out.println("controleurCreationCompte instancié!");
         });
 		

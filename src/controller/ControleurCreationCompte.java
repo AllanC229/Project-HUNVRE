@@ -11,6 +11,7 @@ import connection.DAOAcces;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.DeckJoueur;
 import model.Utilisateur;
 import view.CreationCompte;
@@ -25,7 +26,7 @@ public class ControleurCreationCompte {
 	CreationCompte vueErreurMail;
 	
 	
-	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur) {
+	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur, Stage stage) {
 		
 		this.pseudo = pseudo;
 		this.mail = mail;
@@ -46,7 +47,7 @@ public class ControleurCreationCompte {
         	
         			try {
         	    		
-        				DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
+        	    		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
         	    		
         	      		// vérification si le mail du formualire n'existe pas déjà dans la BDD
         	    		String verifMail = "SELECT mail "
@@ -89,7 +90,7 @@ public class ControleurCreationCompte {
         	    		//la requête est exécutée => instanciation Utilisateur
             	    	System.out.println("requête exécutée, nouvel utilisateur instancié");
         	    		MainApp.utilisateur = new Utilisateur(pseudo, mail, new DeckJoueur(), role); 
-        	    		new ControleurConnexion(1); // renvoie vers l'accueil
+        	    		new ControleurConnexion(1, mail, mdp, stage); // renvoie vers l'accueil
         	           	    		
         	    		}
         	    		dao.closeConnection();
@@ -117,9 +118,9 @@ public class ControleurCreationCompte {
 
     }
 
-	public boolean patternMatches(String emailAddress, String regexPattern) {
+	public boolean patternMatches(String mailAddress, String regexPattern) {
 	    return Pattern.compile(regexPattern)
-	      .matcher(emailAddress)
+	      .matcher(mailAddress)
 	      .matches();
 	}
 	

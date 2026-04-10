@@ -12,6 +12,8 @@ import connection.DAOAcces;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import model.CarteJeu;
+import model.DeckJoueur;
 import view.Partie;
 import view.TableauScore;
 
@@ -32,6 +34,28 @@ public class ControleurAccueil {
         }
         if (direction == 2) {
             System.out.println("Vous lancez une nouvelle partie");
+            
+            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
+            
+            try {
+				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
+				
+				ControleurConnexion.joueur.setDeck(new DeckJoueur());
+				
+				while(listeCarte.next()) {
+					ControleurConnexion.joueur.getDeck().add(new CarteJeu(
+							listeCarte.getInt(1),
+							listeCarte.getInt(2),
+							listeCarte.getString(3),
+							1,
+							listeCarte.getString(4)));
+				}
+			}
+			catch(SQLException e) {
+				System.out.println("Accueil - Recup deck - Ereur SQL");
+				e.printStackTrace();
+			}
+            
             MainApp.jeu.setScene(new Partie());
             MainApp.jeu.setFullScreen(true);
             MainApp.jeu.show();

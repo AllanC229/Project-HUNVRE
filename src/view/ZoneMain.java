@@ -12,6 +12,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -25,6 +30,22 @@ public class ZoneMain extends Pane {
 	private HBox mainCartes;
 	
 	public ZoneMain() {
+
+		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
+
+		BackgroundImage bg = new BackgroundImage(
+		        bandofond,
+		        BackgroundRepeat.NO_REPEAT,
+		        BackgroundRepeat.NO_REPEAT,
+		        BackgroundPosition.CENTER,
+		        new BackgroundSize(
+		                100, 100,
+		                true, true,
+		                true, false
+		        )
+		);
+
+		this.setBackground(new Background(bg));
 	
 	// Début code Vitally - Boutons Jouer et Bouton Jeter	
 		// 	--- Boutons ---
@@ -67,7 +88,7 @@ public class ZoneMain extends Pane {
 	List<CarteJeu> deck = new ArrayList<>(); //On instancie une entité deck
 
 	
-	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); //Début de la requête SQL qui va chercher toutes la cartes dans la BDD
+	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); //Début de la requête SQL qui va chercher toutes la cartes dans la BDD
 	   	try {
 	   		
 	   		Connection conn = dao.getConn();
@@ -83,7 +104,7 @@ public class ZoneMain extends Pane {
 	   			
 	   			deck.add(new CarteJeu(rsDeck.getInt("id_carte"), //On remplit notre deck avec des instances de CarteJeu
 	   								  rsDeck.getInt("valeur"), 
-	   								  rsDeck.getInt("recto"), 
+	   								  rsDeck.getString("recto"), 
 	   								  rsDeck.getInt("ref_visuel"), 
 	   								  rsDeck.getString("couleur")));   			
 	   		}
@@ -118,19 +139,19 @@ public class ZoneMain extends Pane {
 
 	    CarteJeu cartejeu = deck.get(i);	//On récupère l'objet CarteJeu qui se trouve dans deck à la position i
 
-	    Image image = new Image(getClass().getResourceAsStream("/" + cartejeu.getId() + ".jpg")); //On récupère l'image recto associée à la carte
+	    Image image = new Image(getClass().getResourceAsStream("/" + cartejeu.getRecto() + ".jpg")); //On récupère l'image recto associée à la carte
 	    ImageView carte = new ImageView(image);				//Et on crée une ImageView qui s'appelle carte avec l'image qu'on à récupérée									
 
 	    carte.setFitWidth(80);
 	    carte.setPreserveRatio(true);
 
-	    // association image -> objet
+	   
 	    carte.setUserData(cartejeu);	//TRES IMPORTANT : ici on associe l'ImageView carte avec l'instance de l'objet cartejeu ; c'est ce qui va nous permettre plus loin de récupérer ces objets quand on va choisir la carte en cliquant dessus
 
 	    carte.setOnMouseEntered(e -> carte.setTranslateY(-10));		//Suréleve la carte quand on passe la souris dessus
 	    carte.setOnMouseExited(e -> {
 	      
-	    	if (!cartesSelectionnees.contains(carte.getUserData())) { 	//La redescends quand on retire la souris SI on n'a pas cliqué sur la carte
+	    	if (!cartesSelectionnees.contains(carte.getUserData())) { 	//La redescend quand on retire la souris SI on n'a pas cliqué sur la carte
 	            carte.setTranslateY(0);
 	        }
 	    });
@@ -151,8 +172,8 @@ public class ZoneMain extends Pane {
 	       
 	        else if (cartesSelectionnees.size() < 5) {	//Si le tableau ne contient pas la carte (elseif) on vérifie qu'on a bien selectionné moins de 6 cartes
 
-	            cartesSelectionnees.add(cartecliquee); 	//S oui, on ajoute la carte au tableau
-
+	            cartesSelectionnees.add(cartecliquee); 	//Si oui, on ajoute la carte au tableau
+	            
 	               
 	            source.setStyle("-fx-effect: dropshadow(gaussian, purple, 10, 0.5, 0, 0);");	//Un petit effet pour indiquer que la carte est selectionnée
 

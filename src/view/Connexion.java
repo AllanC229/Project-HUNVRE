@@ -31,7 +31,7 @@ import controller.ControleurConnexion;
 public class Connexion extends Scene {
 
     public Connexion(VBox vbox) {
-        super(vbox, 800, 600);
+        super(vbox, 1366, 768);
 
         // --- Barre du haut avec bouton Quitter ---
         Region spacer = new Region();
@@ -64,7 +64,7 @@ public class Connexion extends Scene {
 
         // --- Image de fond via CSS ---
         vbox.setStyle("""
-                -fx-background-image: url("/lapin.png");
+                -fx-background-image: url("/accueil.jpg");
                 -fx-background-size: cover;
                 -fx-background-position: center;
                 """);

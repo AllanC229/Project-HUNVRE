@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 import controller.ControleurAccueil;
+import controller.ControleurConnexion;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -37,6 +38,8 @@ public class Accueil extends Scene {
 	public Accueil(VBox vbox) {
 		
 		super(vbox, 800, 600);
+		
+			Label affichagepseudo = new Label("Bonjour " + ControleurConnexion.joueur.getPseudo());
 					
 			Button bprofil = new Button("Profil");	//bouton sur la page d'accueil qui permet d'accéder au profil
 			VBox.setMargin(bprofil, new Insets(50, 0, 0, 0));
@@ -82,7 +85,7 @@ public class Accueil extends Scene {
 			
 			});
 			
-			vbox.getChildren().addAll(bprofil, bnouvellepartie, btableauscore, bquitter);	//on ajoute tous les boutons à la vbox accueil
+			vbox.getChildren().addAll(affichagepseudo, bprofil, bnouvellepartie, btableauscore, bquitter);	//on ajoute tous les boutons à la vbox accueil
 			
 		
 		Image lapin = new Image(getClass().getResourceAsStream("/lapin.png"));

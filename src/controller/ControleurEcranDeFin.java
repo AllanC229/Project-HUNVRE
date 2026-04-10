@@ -19,7 +19,7 @@ public class ControleurEcranDeFin {
 		if(direction == 1) {
 			System.out.println("Nouvelle partie !");
 			
-			DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream");
+			DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
 			try {
 				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
 				

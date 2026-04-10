@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import connection.DAOAcces;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -48,12 +47,25 @@ public class ZoneMain extends Pane {
 
 		this.setBackground(new Background(bg));
 	
-	
-	// Début code Vitally - Boutons Jouer et Bouton Jeter
-	
+	// Début code Vitally - Boutons Jouer et Bouton Jeter	
 		// 	--- Boutons ---
 		Button jouer = new Button("Jouer");
 		Button jeter = new Button("Jeter");
+		
+		jouer.setLayoutX(300);
+		jouer.setLayoutY(160);
+		jeter.setLayoutX(400);
+		jeter.setLayoutY(160);
+				
+		// Début modification Vitally - centrage des boutons Jouer et Jeter
+		// On place les boutons dans une HBox pour pouvoir les centrer ensemble
+		// Même principe que pour les cartes : (largeur du Pane - largeur de la HBox) / 2
+		HBox boutons = new HBox(10);
+		boutons.getChildren().addAll(jouer, jeter);
+		boutons.layoutXProperty().bind(this.widthProperty().subtract(boutons.widthProperty()).divide(2));
+		boutons.setLayoutY(160);
+		this.getChildren().add(boutons);
+		// Fin modification Vitally
 		     
 		// --- Taille max des composants ---
 		jouer.setMaxWidth(200);
@@ -67,15 +79,11 @@ public class ZoneMain extends Pane {
         jeter.setOnAction(e -> {
         	// à écrire
         });
-
  	// Fin code Vitally - Boutons Jouer et Bouton Jeter
 
 	
-	//Debut code d'Allan
-	
-	
-	
-	//DeckJoueur deck = new DeckJoueur();
+	// Debut code d'Allan	
+	// DeckJoueur deck = new DeckJoueur();
 
 	List<CarteJeu> deck = new ArrayList<>(); //On instancie une entité deck
 
@@ -86,7 +94,7 @@ public class ZoneMain extends Pane {
 	   		Connection conn = dao.getConn();
 	   		conn.setAutoCommit(false);
 
-	   		String sql = "SELECT * FROM carte;";	//On prend toutes les cartes de la table carte
+	   		String sql = "SELECT * FROM carte;"; //On prend toutes les cartes de la table carte
 	   		
 	   		PreparedStatement psDeck = conn.prepareStatement(sql);
 	   		
@@ -94,7 +102,7 @@ public class ZoneMain extends Pane {
 	   		
 	   		while (rsDeck.next()) {	 
 	   			
-	   			deck.add(new CarteJeu(rsDeck.getInt("id_carte"), 	//On remplit notre deck avec des instances de CarteJeu
+	   			deck.add(new CarteJeu(rsDeck.getInt("id_carte"), //On remplit notre deck avec des instances de CarteJeu
 	   								  rsDeck.getInt("valeur"), 
 	   								  rsDeck.getString("recto"), 
 	   								  rsDeck.getInt("ref_visuel"), 
@@ -115,8 +123,13 @@ public class ZoneMain extends Pane {
 	mainCartes.setSpacing(10);
 	mainCartes.setAlignment(Pos.CENTER);
 	
-	mainCartes.setLayoutX(20);
+	//mainCartes.setLayoutX(20);
+	//mainCartes.setLayoutY(20);
+	
+	// Début modification Vitally - centrage des cartes
+	mainCartes.layoutXProperty().bind(this.widthProperty().subtract(mainCartes.widthProperty()).divide(2));
 	mainCartes.setLayoutY(20);
+	// Fin modification Vitally
 	
 	this.getChildren().add(mainCartes);
 	

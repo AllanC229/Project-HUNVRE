@@ -1,6 +1,7 @@
 package view;
 
 import app.MainApp;
+import controller.ControleurPartie;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -29,6 +30,11 @@ public class Partie extends Scene {
 
 	public Partie() {
         super(new GridPane(), 1200, 900);
+        ZoneMain zonemain = new ZoneMain();		//Instancie les vues ZoneMain et ZoneSeb
+        ZoneSeb zoneSebAfficheCombinaison = new ZoneSeb();
+        
+        ControleurPartie controleurpartie = new ControleurPartie(zoneSebAfficheCombinaison); //Initialise le controleurpartie avec la zoneseb qui vient d'être instanciée
+        zonemain.setControleur(controleurpartie); //Associe le controleurpartie à la zonemain
 
         GridPane partie = (GridPane) getRoot();
 		partie.setGridLinesVisible(true);
@@ -60,9 +66,10 @@ public class Partie extends Scene {
 
 	partie.add(new ZoneCentrale(), 0, 1, 3, 1);	
 	
-	partie.add(new ZoneSeb(), 0, 2);
 	
-	partie.add(new ZoneMain(), 1, 2);	
+	partie.add(zoneSebAfficheCombinaison, 0, 2);
+	
+	partie.add(zonemain, 1, 2);	
 	
 	partie.add(new ZoneDeck(), 2, 2);
 	

@@ -28,11 +28,16 @@ import model.DeckJoueur;
 
 public class ZoneMain extends Pane {
 	
+	private ControleurPartie controleurpartie;
+	public void setControleur(ControleurPartie controleurpartie) { //La fonction qui permet d'associer  la zonemain le controleurpartie instancié dans la vue Partie
+		this.controleurpartie = controleurpartie;
+	}
+	
 	private HBox mainCartes;
 	
 	public ZoneMain() {
 
-		ControleurPartie controleurpartie = new ControleurPartie();  //Instancie le ControleurPartie pour pouvoir l'appeler plus tard dans le code
+		
 		
 		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
 
@@ -160,7 +165,6 @@ public class ZoneMain extends Pane {
 
 	    carte.setOnMouseClicked(e -> {		//Au clic sur la carte
 	    	
-	    
 	    	
 	        ImageView source = (ImageView) e.getSource();
 	        CarteJeu cartecliquee = (CarteJeu) source.getUserData();	//On crée une cartecliquee en dupliquant l'objet qu'on a associé à l'image
@@ -171,19 +175,22 @@ public class ZoneMain extends Pane {
 	            cartesSelectionnees.remove(cartecliquee);	//On la supprime du tableau (déselection)
 	            source.setTranslateY(0);
 	            source.setStyle("");
+	            controleurpartie.retirercarteselection(cartecliquee);
+	            System.out.println(controleurpartie.combinaisonactive());
 
 	        }
 	       
 	        else if (cartesSelectionnees.size() < 5) {	//Si le tableau ne contient pas la carte (elseif) on vérifie qu'on a bien selectionné moins de 6 cartes
 
 	            cartesSelectionnees.add(cartecliquee); 	//Si oui, on ajoute la carte au tableau
-	           
+	            controleurpartie.ajoutercarteselection(cartecliquee);
+	            
+	            System.out.println(controleurpartie.combinaisonactive());
 	               
 	            source.setStyle("-fx-effect: dropshadow(gaussian, purple, 10, 0.5, 0, 0);");	//Un petit effet pour indiquer que la carte est selectionnée
 
 	        }
 	        
-	        controleurpartie.carteCliquee(cartecliquee);  //On appelle la méthode carteCliquee du ControleurPartie en lui donnant cartecliquee comme parametre
 
 	        System.out.println("Cartes sélectionnées : " + cartesSelectionnees.size());
 	    });

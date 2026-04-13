@@ -35,7 +35,7 @@ public class ControleurAccueil {
         if (direction == 2) {
             System.out.println("Vous lancez une nouvelle partie");
             
-            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream");
+            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
             
             try {
 				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
@@ -63,7 +63,7 @@ public class ControleurAccueil {
         if (direction == 3) {
             System.out.println("Vous êtes sur le tableau des scores");
             
-            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); 
+            DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
             	try {
             		
             		Connection conn = dao.getConn();

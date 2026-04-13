@@ -22,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import controller.ControleurConnexion;
+import controller.ControleurPartie;
 import javafx.scene.control.Button;
 import model.CarteJeu;
 import model.DeckJoueur;
@@ -32,6 +33,8 @@ public class ZoneMain extends Pane {
 	
 	public ZoneMain() {
 
+		ControleurPartie controleurpartie = new ControleurPartie();  //Instancie le ControleurPartie pour pouvoir l'appeler plus tard dans le code
+		
 		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
 
 		BackgroundImage bg = new BackgroundImage(
@@ -80,7 +83,7 @@ public class ZoneMain extends Pane {
 	List<CarteJeu> deck = new ArrayList<>(); //On instancie une entité deck
 
 	
-	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "sandman", "bringme4dream"); //Début de la requête SQL qui va chercher toutes la cartes dans la BDD
+	   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); //Début de la requête SQL qui va chercher toutes les cartes dans la BDD
 	   	try {
 	   		
 	   		Connection conn = dao.getConn();
@@ -131,7 +134,6 @@ public class ZoneMain extends Pane {
 
 	    carte.setFitWidth(80);
 	    carte.setPreserveRatio(true);
-
 	   
 	    carte.setUserData(cartejeu);	//TRES IMPORTANT : ici on associe l'ImageView carte avec l'instance de l'objet cartejeu ; c'est ce qui va nous permettre plus loin de récupérer ces objets quand on va choisir la carte en cliquant dessus
 
@@ -144,7 +146,9 @@ public class ZoneMain extends Pane {
 	    });
 
 	    carte.setOnMouseClicked(e -> {		//Au clic sur la carte
-
+	    	
+	    
+	    	
 	        ImageView source = (ImageView) e.getSource();
 	        CarteJeu cartecliquee = (CarteJeu) source.getUserData();	//On crée une cartecliquee en dupliquant l'objet qu'on a associé à l'image
 
@@ -160,11 +164,13 @@ public class ZoneMain extends Pane {
 	        else if (cartesSelectionnees.size() < 5) {	//Si le tableau ne contient pas la carte (elseif) on vérifie qu'on a bien selectionné moins de 6 cartes
 
 	            cartesSelectionnees.add(cartecliquee); 	//Si oui, on ajoute la carte au tableau
-	            
+	           
 	               
 	            source.setStyle("-fx-effect: dropshadow(gaussian, purple, 10, 0.5, 0, 0);");	//Un petit effet pour indiquer que la carte est selectionnée
 
 	        }
+	        
+	        controleurpartie.carteCliquee(cartecliquee);  //On appelle la méthode carteCliquee du ControleurPartie en lui donnant cartecliquee comme parametre
 
 	        System.out.println("Cartes sélectionnées : " + cartesSelectionnees.size());
 	    });

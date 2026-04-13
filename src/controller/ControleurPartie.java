@@ -5,16 +5,24 @@ import view.ZoneSeb;
 
 public class ControleurPartie {
 	
-	//Récupère les cartes cliquées puis les envoie vers la ZoneSeb qui s'occupe de calcul les combinaisons
+	/*private ControleurPartie controleurPartie;
 
-    private ZoneSeb zoneSeb;
+	public void setControleurPartie(ControleurPartie cp) {
+	    this.controleurPartie = cp;
+	}*/
+	
+    private ZoneSeb zoneSeb = new ZoneSeb(); //On instancie la ZoneSeb
 
-    public ControleurPartie(ZoneSeb zoneSeb) {
-        this.zoneSeb = zoneSeb;
+    public ControleurPartie() {
+       // this.zoneSeb = zoneSeb;
+    }
+    public void carteCliquee(CarteJeu carte) { //La methode carteCliquee qui permet d'appeler la fonction afficherCarte de la ZoneSeb
+
+        System.out.println("Carte reçue : " + carte.getRecto() +"");
+
+        zoneSeb.afficherCarte(carte);
     }
 
-    public void recevoirCarteCliquee(CarteJeu carteCliquee) {
-        zoneSeb.afficherCarte(carteCliquee);
-    }
+   
 	
 }

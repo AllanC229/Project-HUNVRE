@@ -1,25 +1,35 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class DeckJoueur {
+public class DeckJoueur extends ArrayList {
 	
-	private ArrayList<CarteJeu> deck;
+	private List<CarteJeu> deck;
 	
 	public DeckJoueur() {
 	
-			this.deck = new ArrayList<CarteJeu>();	
+			//this.deck = new List<CarteJeu>();	
 	}
 	
-	public ArrayList<CarteJeu> getListedeck() { 
+	public List<CarteJeu> getListedeck() { 
 		return this.deck;
 	}
 	/*public CarteJeu getCartedejeubyid(int id) {
 		Cartedejeu.getId();
 	}*/
 	
-	public void add(CarteJeu c) { // Surcharge de la méthode add() de ArrayList
-		this.deck.add(c);
+	public CarteJeu cherchercarte(int id) {
+		for (CarteJeu carte : this.deck) {
+			if (carte.getId() == id) {
+				return carte;
+			}
+		}
+		return null;
+	}
+	
+	public void ajoutercarte(CarteJeu c) { // Surcharge de la méthode add() de ArrayList
+		this.add(c);
 	}
 
 }

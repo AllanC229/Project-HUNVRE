@@ -12,8 +12,8 @@ public class DeckJoueur extends ArrayList {
 			//this.deck = new List<CarteJeu>();	
 	}
 	
-	public List<CarteJeu> getListedeck() { 
-		return this.deck;
+	public ArrayList getListedeck() { 
+		return (ArrayList) this.deck;
 	}
 	/*public CarteJeu getCartedejeubyid(int id) {
 		Cartedejeu.getId();
@@ -28,7 +28,7 @@ public class DeckJoueur extends ArrayList {
 		return null;
 	}
 	
-	public void ajoutercarte(CarteJeu c) { // Surcharge de la méthode add() de ArrayList
+	public void add(CarteJeu c) { // Surcharge de la méthode add() de ArrayList
 		this.add(c);
 	}
 

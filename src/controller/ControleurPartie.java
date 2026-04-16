@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import model.CarteJeu;
 import view.ZoneSeb;
 
@@ -12,30 +15,19 @@ public class ControleurPartie {
 	//Début code Allan
 		private ZoneSeb zoneSebAfficheCombinaison;
 		private ArrayList<Integer> cartesselectionnees = new ArrayList<Integer>();
-	//	private HashMap<String, Integer> cartespourcombinaison = new HashMap<String, Integer>();
 
 		public ControleurPartie (ZoneSeb zoneSebAfficheCombinaison) { //Le constructeur du controleurpartie, va probablement s'étoffer à mesure que le code se construit
-			this.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;
-			
-	}
- 
- 
-    public void carteCliquee(CarteJeu carte) { //La methode carteCliquee qui permet d'appeler la fonction afficherCarte de la ZoneSeb
-    											//A terme, elle sera remplacée par la fonction "afficher combinaison"
-      
-    	System.out.println("Carte reçue : " + carte.getRecto() +"");
-        zoneSebAfficheCombinaison.afficherCarte(carte);
-        System.out.println(cartesselectionnees);
-    }
+			this.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;			
+		}
     
-    public String combinaisonactive() { //Fonction qui permet de définir la combinaison actuelle en fonction des cartes que l'on a selectionnées
+		public String combinaisonactive() { //Fonction qui permet de définir la combinaison actuelle en fonction des cartes que l'on a selectionnées
     	
-    	String combinaison = null;
-    	HashMap<Integer, Integer> calculcombinaison = new HashMap<>();
-    	
-    	for (int carte : cartesselectionnees) {
-    		int valeur = carte%13;
-    		calculcombinaison.put(valeur, calculcombinaison.getOrDefault(valeur,  0) +1);   		
+	    	String combinaison = null;
+	    	HashMap<Integer, Integer> calculcombinaison = new HashMap<>();
+	    	
+	    	for (int carte : cartesselectionnees) {
+	    		int valeur = carte%13;
+	    		calculcombinaison.put(valeur, calculcombinaison.getOrDefault(valeur,  0) +1);   		
     	}
     	
     	boolean paire = false;
@@ -76,6 +68,24 @@ public class ControleurPartie {
     	//cartespourcombinaison.remove(carte.getRecto());
     	//System.out.println(cartespourcombinaison);
     	
+    }
+    
+    public void affichercombinaisonzoneseb(String combinaison) { //Permet d'afficher la chaine de caractères donnée en paramêtre dans la zone seb
+    	
+    	zoneSebAfficheCombinaison.getChildren().clear();
+    	HBox affiche = new HBox();
+    	affiche.setAlignment(Pos.CENTER);
+    	Label affichecombinaison = new Label(combinaison);
+    	
+    	affichecombinaison.setStyle("""
+    		    -fx-font-size: 28px;
+    		    -fx-font-weight: bold;
+    		    -fx-text-fill: linear-gradient(to right, #3a3a3a, #0f0f0f);
+    		    -fx-effect: dropshadow(gaussian, rgba(50, 0, 80, 0.7), 20, 0.9, 0, 0);
+    		""");
+    	
+    	affiche.getChildren().add(affichecombinaison);
+    	zoneSebAfficheCombinaison.getChildren().add(affiche);   	
     }
 	//Fin code Allan
     

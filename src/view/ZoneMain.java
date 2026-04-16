@@ -163,6 +163,7 @@ public class ZoneMain extends Pane {
 	            source.setTranslateY(0);
 	            source.setStyle("");
 	            controleurpartie.retirercarteselection(cartecliquee);
+	            controleurpartie.affichercombinaisonzoneseb(controleurpartie.combinaisonactive());	//Ca c'est tordu mais marrant : on appelle une fonction en lui donnant pour parametre le resultat d'une fonction directement appelée dans l'argument
 	            System.out.println(controleurpartie.combinaisonactive());
 
 	        }
@@ -171,7 +172,7 @@ public class ZoneMain extends Pane {
 
 	            cartesSelectionnees.add(cartecliquee); 	//Si oui, on ajoute la carte au tableau
 	            controleurpartie.ajoutercarteselection(cartecliquee);
-	            
+	            controleurpartie.affichercombinaisonzoneseb(controleurpartie.combinaisonactive());
 	            System.out.println(controleurpartie.combinaisonactive());
 	               
 	            source.setStyle("-fx-effect: dropshadow(gaussian, purple, 10, 0.5, 0, 0);");	//Un petit effet pour indiquer que la carte est selectionnée

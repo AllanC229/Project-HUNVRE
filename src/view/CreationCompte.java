@@ -25,9 +25,13 @@ public class CreationCompte extends Scene {
 
 		 // Création des labels du formulaire d'inscription
         Label pseudoLabel = new Label("Pseudo :*");
+        pseudoLabel.setStyle("-fx-text-fill: white;");
         Label mailLabel = new Label("Mail :*");
+        mailLabel.setStyle("-fx-text-fill: white;");
         Label mdpLabel = new Label("Mot de passe :*");
+        mdpLabel.setStyle("-fx-text-fill: white;");
         Label confirmMdpLabel = new Label("Confirmer le mot de passe :*");
+        confirmMdpLabel.setStyle("-fx-text-fill: white;");
 
         // Création des champs textes
         TextField pseudoChamps = new TextField();

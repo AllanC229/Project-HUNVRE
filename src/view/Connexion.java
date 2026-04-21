@@ -53,10 +53,13 @@ public class Connexion extends Scene {
         Label labelEmail = new Label("Adresse email :");
         TextField email = new TextField();
         email.setPromptText("exemple@mail.com");
+        labelEmail.setStyle("-fx-text-fill: white;");
 
+        
         Label labelMdp = new Label("Mot de passe :");
         PasswordField mdp = new PasswordField();
         mdp.setPromptText("Votre mot de passe");
+        labelMdp.setStyle("-fx-text-fill: white;");
 
         // --- Boutons ---
         Button connexion = new Button("Se connecter");
@@ -64,7 +67,7 @@ public class Connexion extends Scene {
 
         // --- Image de fond via CSS ---
         vbox.setStyle("""
-                -fx-background-image: url("/lapin.png");
+                -fx-background-image: url("/accueil.jpg");
                 -fx-background-size: cover;
                 -fx-background-position: center;
                 """);

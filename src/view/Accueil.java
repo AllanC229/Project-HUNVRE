@@ -85,12 +85,12 @@ public class Accueil extends Scene {
 			vbox.getChildren().addAll(bprofil, bnouvellepartie, btableauscore, bquitter);	//on ajoute tous les boutons à la vbox accueil
 			
 		
-		Image lapin = new Image(getClass().getResourceAsStream("/lapin.png"));
+		Image lapin = new Image(getClass().getResourceAsStream("/accueil.jpg"));
 		vbox.setPadding(new Insets(30));   
 		vbox.setMaxWidth(350);
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setStyle("""
-		    -fx-background-image: url("/lapin.png");
+		    -fx-background-image: url("/accueil.jpg");
 		    -fx-background-size: cover;
 			-fx-background-position: center;
 		""");

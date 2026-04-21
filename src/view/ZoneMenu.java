@@ -8,6 +8,7 @@ import java.util.Optional;
 import app.MainApp;
 import connection.DAOAcces;
 import controller.ControleurConnexion;
+import controller.ControleurPartie;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -59,53 +60,8 @@ public class ZoneMenu extends Pane {
 			bsauvegarder.setOnAction(ef -> {
 				System.out.println("bsauvegarder cliqué");
 				stageoptions.close();
-				int tailleDeck = ControleurConnexion.joueur.getDeck().getListedeck().size();
-				System.out.println(tailleDeck);
-				
-				System.out.println("Liste des cartes (si ça marche) :");
-				DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
-				try {
-					int idJoueur = 0;
-					int idCarte = 0;
-					int qteCarte[] = new int[52];
-					
-					for(int i = 0; i < 52; i++) qteCarte[i] = 0;
-						
-					for(int i = 0; i < tailleDeck; i++) {
-						idCarte = ControleurConnexion.joueur.getDeck().getListedeck().get(i).getId();
-						qteCarte[idCarte - 1] += 1;
-					}
-					
-					PreparedStatement pstSauvegarde = dao.getConn().prepareStatement(
-							"SELECT id_utilisateur FROM utilisateur WHERE mail = ?");
-					pstSauvegarde.setString(1, ControleurConnexion.joueur.getMail());
-					ResultSet rsSauvegarde = pstSauvegarde.executeQuery();
-					while(rsSauvegarde.next()) {
-						idJoueur = rsSauvegarde.getInt(1);
-					}
-					
-					dao.getConn().setAutoCommit(false);
-					PreparedStatement insertion = dao.getConn().prepareStatement("DELETE FROM deck_carte WHERE ref_utilisateur = ?");
-					insertion.setInt(1, idJoueur);
-					insertion.executeUpdate();
-					
-					for(int i = 0; i < 52; i++) {
-						insertion = dao.getConn().prepareStatement("INSERT INTO deck_carte VALUES (?, ?, ?)");
-						insertion.setInt(1, idJoueur);
-						insertion.setInt(2, i + 1);
-						insertion.setInt(3, qteCarte[i]);
-						insertion.executeUpdate();
-					}
-					
-					dao.getConn().commit();
-					
-				
-				}
-				catch(SQLException e) {
-					e.printStackTrace();
-				}
-				dao.closeConnection();
-				
+				//Fonction de ControleurPartie pour sauvegarder
+				ControleurPartie.sauvegarderPartie(ControleurConnexion.joueur);
 			});
 			
 			baccueil.setOnAction(eg -> {

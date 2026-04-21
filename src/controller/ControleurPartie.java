@@ -284,7 +284,7 @@ public class ControleurPartie {
 			for(int i = 0; i < 52; i++) qteCarte[i] = 0;
 				
 			for(int i = 0; i < tailleDeck; i++) {
-				idCarte = joueur.getDeck().getListedeck().get(i).getId();
+				idCarte = joueur.getDeck().cherchercarte(i).getId();
 				qteCarte[idCarte - 1] += 1;
 			}
 			

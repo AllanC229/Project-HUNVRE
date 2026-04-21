@@ -11,6 +11,7 @@ import controller.ControleurConnexion;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -72,7 +73,7 @@ public class ZoneMenu extends Pane {
 					for(int i = 0; i < 52; i++) qteCarte[i] = 0;
 						
 					for(int i = 0; i < tailleDeck; i++) {
-						idCarte = ControleurConnexion.joueur.getDeck().getListedeck().get(i).getId();
+						idCarte = ((CarteJeu) ControleurConnexion.joueur.getDeck().getListedeck().get(i)).getId();
 						qteCarte[idCarte - 1] += 1;
 					}
 					
@@ -200,7 +201,7 @@ public class ZoneMenu extends Pane {
 				
 				// Compte du nombre de cartes par couleur
 				for(int j = 0; j < tailleDeckInfos; j++) {
-					switch (deckListe.getListedeck().get(j).getCouleur()) {
+					switch (((CarteJeu) deckListe.getListedeck().get(j)).getCouleur()) {
 					case "trefle":
 						compteTrefle += 1;
 						break;
@@ -218,7 +219,7 @@ public class ZoneMenu extends Pane {
 				
 				for(int i = 0; i < tailleDeckInfos; i++) {
 					
-					CarteJeu carteListe = deckListe.getListedeck().get(i);
+					CarteJeu carteListe = (CarteJeu) deckListe.getListedeck().get(i);
 					Image imageCarte = new Image(getClass().getResourceAsStream("/" + carteListe.getRecto() + ".jpg"));
 					ImageView lacarte = new ImageView(imageCarte);
 					lacarte.setFitWidth(60);

@@ -170,7 +170,7 @@ public class ControleurPartie {
 		   								  rsDeck.getString("recto"), 
 		   								  rsDeck.getInt("ref_visuel"), 
 		   								  rsDeck.getString("couleur"));  
-		   			deck.add(carte);
+		   			deck.ajoutercarte(carte);
 		   		}
 		   	}
 		   		catch (SQLException e1) {

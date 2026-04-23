@@ -1,10 +1,13 @@
 package view;
 
-// --- javafx.* ---
+import java.awt.Font;
+
+import controller.ControleurPartie;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.text.FontWeight;
 
 // --- Classes du projet ---
 import controller.ControleurConnexion;
@@ -25,33 +28,50 @@ import controller.ControleurConnexion;
  * c'est le score du coup joué, pas l'objectif blinde à atteindre.
  */
 public class ZoneScore extends Pane {
+	
+	private HBox afficherscore = new HBox();
+	public Label scoreaffiche = new Label("0");
+	public int score = 0;
+	
+	public ZoneScore () {
 
-    // Labels d'affichage
-    private Label labelScoreBlinde; // Score du coup qui vient d'être joué
-    private Label labelScoreTotal;  // Score total cumulé depuis le début de la partie
+		afficherscore.setAlignment(Pos.CENTER);
+		afficherscore.getChildren().add(scoreaffiche);
 
-    public ZoneScore() {
-        labelScoreBlinde = new Label("Score blinde : 0");
 
-        // Au lancement de la partie, le score total est 0 (ou le score existant si reprise)
-        labelScoreTotal = new Label("Score total : " + ControleurConnexion.joueur.getScore());
+		scoreaffiche.setStyle("""
+    		 -fx-font-size: 28px;
+				-fx-font-weight: bold;
+				-fx-text-fill: linear-gradient(to right, #ffffff, #cfcfcf);
+				-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.25), 8, 0.5, 0, 0);
+    		""");
+		
+		afficherscore.setSpacing(10);	
+		afficherscore.setLayoutX(20);
+		afficherscore.setLayoutY(20);
 
-        VBox vbox = new VBox(10);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(labelScoreBlinde, labelScoreTotal);
+		this.getChildren().add(afficherscore);
+		
+		
+	}
 
-        // Centrage horizontal et vertical dans le Pane
-        vbox.layoutXProperty().bind(this.widthProperty().subtract(vbox.widthProperty()).divide(2));
-        vbox.layoutYProperty().bind(this.heightProperty().subtract(vbox.heightProperty()).divide(2));
-
-        this.getChildren().add(vbox);
-    }
-
-    // Mise à jour de l'affichage — appelée par ControleurPartie après chaque combinaison jouée.
-    // scoreCombo : score du coup qui vient d'être joué
-    // scoreTotal  : score total cumulé depuis le début de la partie
-    public void majScore(int scoreCombo, int scoreTotal) {
-        labelScoreBlinde.setText("Score blinde : " + scoreCombo);
-        labelScoreTotal.setText("Score total : " + scoreTotal);
+	
+    public void afficherscorezonescore(int score) { //Permet d'afficher le score donné en paramêtre dans la zoneScore
+    	
+    	this.afficherscore.getChildren().clear();
+    	HBox affiche = new HBox();
+    	affiche.setAlignment(Pos.CENTER);
+    	String scoreText = "Score actuel : " + Integer.toString(score);
+    	Label affichescore = new Label(scoreText);
+    	
+    	affichescore.setStyle("""
+    		-fx-font-size: 28px;
+			-fx-font-weight: bold;
+			-fx-text-fill: linear-gradient(to right, #ffffff, #cfcfcf);
+			-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.25), 8, 0.5, 0, 0);
+    		""");
+    	
+    	affiche.getChildren().add(affichescore);
+    	this.afficherscore.getChildren().add(affiche);   	
     }
 }

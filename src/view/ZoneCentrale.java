@@ -7,7 +7,7 @@ public class ZoneCentrale extends Pane {
 	
 	public ZoneCentrale() {
 		
-		Image image = new Image(getClass().getResource("/images/bandomilieu1.jpg").toExternalForm());
+		Image image = new Image(getClass().getResource("/bandomilieu1.jpg").toExternalForm());
 		
 		BackgroundSize backgroundSize = new BackgroundSize(
 				100, 100, true, true, true, false);

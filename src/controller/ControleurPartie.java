@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import model.CarteJeu;
 import model.DeckJoueur;
 import view.ZoneMain;
+import view.ZoneScore;
 import model.Utilisateur;
 import view.ZoneSeb;
 
@@ -26,14 +27,16 @@ public class ControleurPartie {
     
 	//Début code Allan
 		private ZoneSeb zoneSebAfficheCombinaison;
+		private ZoneScore zoneAfficheScore;
 		public ArrayList<Integer> cartesjouables = new ArrayList<Integer>();	//Ce tableau sert au calcul des scores : il contient les valeurs des cartes qu'on a selectionnées et est utilisé dans la fonction combinaisonactive
 		public List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees; ce tableau ne sert qu'à vérifier qu'on a bien 5 cartes ou moins selectionnées
 		public List<ImageView> cartesaffichees = new ArrayList<>();
 		
 	//Début des fonctions associées à la zoneSeb
 		
-		public ControleurPartie (ZoneSeb zoneSebAfficheCombinaison) { //Le constructeur du controleurpartie, va probablement s'étoffer à mesure que le code se construit
-			this.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;			
+		public ControleurPartie (ZoneSeb zoneSebAfficheCombinaison, ZoneScore zonescore) { //Le constructeur du controleurpartie, va probablement s'étoffer à mesure que le code se construit
+			this.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;	
+			this.zoneAfficheScore = zoneAfficheScore;
 		}
 		
 		public String combinaisonactive() {	//Fonction qui permet de terminer la combinaison de poker avec les cartes selectionnées
@@ -144,6 +147,12 @@ public class ControleurPartie {
 	    }
 		
 		//Fin des fonctions associées à la zoneSeb
+	    
+	    //Debut des fonctions associées à la zonescore
+	    
+
+	    
+	    //Fin des fonctions associées à la zonescore
 		
 		//Début des fonctions associées à la zoneMain
 	    

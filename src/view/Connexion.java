@@ -53,10 +53,13 @@ public class Connexion extends Scene {
         Label labelEmail = new Label("Adresse email :");
         TextField email = new TextField();
         email.setPromptText("exemple@mail.com");
+        labelEmail.setStyle("-fx-text-fill: white;");
 
+        
         Label labelMdp = new Label("Mot de passe :");
         PasswordField mdp = new PasswordField();
         mdp.setPromptText("Votre mot de passe");
+        labelMdp.setStyle("-fx-text-fill: white;");
 
         // --- Boutons ---
         Button connexion = new Button("Se connecter");

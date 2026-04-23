@@ -18,14 +18,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import model.CarteJeu;
 import model.DeckJoueur;
+import view.ZoneMain;
 import view.ZoneSeb;
 
 public class ControleurPartie {
     
 	//Début code Allan
 		private ZoneSeb zoneSebAfficheCombinaison;
-		private ArrayList<Integer> cartesselectionnees = new ArrayList<Integer>();
-
+		public ArrayList<Integer> cartesjouables = new ArrayList<Integer>();	//Ce tableau sert au calcul des scores : il contient les valeurs des cartes qu'on a selectionnées et est utilisé dans la fonction combinaisonactive
+		public List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees; ce tableau ne sert qu'à vérifier qu'on a bien 5 cartes ou moins selectionnées
+		public List<ImageView> cartesaffichees = new ArrayList<>();
 		
 	//Début des fonctions associées à la zoneSeb
 		
@@ -41,7 +43,7 @@ public class ControleurPartie {
 		    HashMap<Integer, Integer> couleurs = new HashMap<>();
 
 		    // Comptage
-		    for (int carte : cartesselectionnees) {
+		    for (int carte : cartesjouables) {
 		        int valeur = carte % 13;
 		        int couleur = carte / 13;
 
@@ -145,7 +147,7 @@ public class ControleurPartie {
 		//Début des fonctions associées à la zoneMain
 	    
 	    
-	public DeckJoueur chargernouveaudeck() {	//La fonction qui permet de cherer toutes les cartes de la BDD et de s'en servir pour crée une instance de l'objet deck
+	public DeckJoueur chargernouveaudeck() {	//La fonction qui permet de chercher toutes les cartes de la BDD et de s'en servir pour crée une instance de l'objet deck
 		
 		   DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); //Début de la requête SQL qui va chercher toutes les cartes dans la BDD
 		   DeckJoueur deck = new DeckJoueur();
@@ -181,18 +183,29 @@ public class ControleurPartie {
 		   		return deck;
 	}
 	
-	public HBox tiragecartes(DeckJoueur deck) {		//La fonction qui permet de tirer les 8 premières cartes du deck, qui constitueront la première main du joueur
+	public void jetercartes(List<ImageView> cartes, HBox main) {	//La fonction qui sert à supprimer les cartes sélectionnées
 		
-		List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees
-		HBox mainCartes = new HBox();
+		for (ImageView carte : cartes) {
+			main.getChildren().remove(carte);
+		}
+		cartes.clear();
+		cartesSelectionnees.clear();
+		System.out.println(cartes);
+		zoneSebAfficheCombinaison.getChildren().clear(); //
+	}
+	
+	public List<ImageView> tiragecartes(DeckJoueur deck, int nombretirage, int debuttirage) {		//La fonction qui permet de faire un tirage d'un certain nombre de cartes dans le deck, et de les stocker sous forme d'une liste d'imageview qui seront plus tard ajoutées à la HBox de ZoneMain
 		
-		for (int i= 0; i < 8; i++) {	//On rentre dans la boucle qui fait le tirage
+		List<ImageView> cartestirees = new ArrayList<>();	//La liste qui contiendra les cartes tirées et qui sera retournée à la fin de la fonction
+		int n = debuttirage + nombretirage; //ça correspond à l'index jusqu'auquel on va tirer des cartes
+		ZoneMain.setIndex(n); //Permet de garder une trace d'où on est rendu dans le tirage des cartes du deck
+		for (int i= debuttirage; i < n; i++) {	//On rentre dans la boucle qui fait le tirage
 
 		    CarteJeu cartejeu = (CarteJeu) deck.get(i);	//On récupère l'objet CarteJeu qui se trouve dans deck à la position i
 		    
 		    Image image = new Image(getClass().getResourceAsStream("/" + cartejeu.getRecto() + ".jpg")); //On récupère l'image recto associée à la carte
 		    ImageView carte = new ImageView(image);			//Et on crée une ImageView qui s'appelle carte avec l'image qu'on à récupérée									
-
+		    
 		    carte.setFitWidth(80);
 		    carte.setPreserveRatio(true);
 		   
@@ -208,7 +221,7 @@ public class ControleurPartie {
 
 		    carte.setOnMouseClicked(e -> {		//Au clic sur la carte
 		    	
-		    	
+		    	System.out.println(carte);
 		        ImageView source = (ImageView) e.getSource();
 		        CarteJeu cartecliquee = (CarteJeu) source.getUserData();	//On crée une cartecliquee en dupliquant l'objet qu'on a associé à l'image
 
@@ -218,7 +231,8 @@ public class ControleurPartie {
 		            cartesSelectionnees.remove(cartecliquee);	//On la supprime du tableau (déselection)
 		            source.setTranslateY(0);
 		            source.setStyle("");
-		            retirercarteselection(cartecliquee);
+		            retirercartejouable(cartecliquee);
+		            cartesaffichees.remove(carte);
 		            affichercombinaisonzoneseb(combinaisonactive());	//Ca c'est tordu mais marrant : on appelle une fonction en lui donnant pour parametre le resultat d'une fonction directement appelée dans l'argument
 		            System.out.println(combinaisonactive());
 
@@ -227,10 +241,11 @@ public class ControleurPartie {
 		        else if (cartesSelectionnees.size() < 5) {	//Si le tableau ne contient pas la carte (elseif) on vérifie qu'on a bien selectionné moins de 6 cartes
 
 		            cartesSelectionnees.add(cartecliquee); 	//Si oui, on ajoute la carte au tableau
-		            ajoutercarteselection(cartecliquee);
+		            ajoutercartejouable(cartecliquee);
 		            affichercombinaisonzoneseb(combinaisonactive());
+		            cartesaffichees.add(carte);
 		            System.out.println(combinaisonactive());
-		               
+		           	System.out.println("la carte cliquée est :"+ cartecliquee);	               
 		            source.setStyle("-fx-effect: dropshadow(gaussian, purple, 10, 0.5, 0, 0);");	//Un petit effet pour indiquer que la carte est selectionnée
 
 		        }
@@ -238,24 +253,22 @@ public class ControleurPartie {
 
 		        System.out.println("Cartes sélectionnées : " + cartesSelectionnees.size());
 		    });
-			mainCartes.getChildren().add(carte); 	//Une fois qu'on a défini tout ça pour UNE carte, on l'ajoute à la HBox mainCartes
+			cartestirees.add(carte); 	//Une fois qu'on a défini tout ça pour UNE carte, on l'ajoute à la liste cartestirees
 		}
-		return mainCartes;
+
+		return cartestirees;
+		
 	}
 
-    public void ajoutercarteselection (CarteJeu carte) {	//La fonction pour ajouter la carte selectionnée depuis ZoneMain au tableau
+    public void ajoutercartejouable (CarteJeu carte) {	//La fonction pour ajouter la carte selectionnée depuis ZoneMain au tableau
     
-    	cartesselectionnees.add(Integer.parseInt(carte.getRecto()));
-    	//cartespourcombinaison.put(carte.getRecto(), (Integer.parseInt(carte.getRecto()))%13);
-    	//System.out.println(cartespourcombinaison);
+    	cartesjouables.add(Integer.parseInt(carte.getRecto()));   	
     	
     }
    
-    public void retirercarteselection (CarteJeu carte) {	//La fonction pour retirer la carte selectionnée depuis ZoneMain au tableau
+    public void retirercartejouable (CarteJeu carte) {	//La fonction pour retirer la carte selectionnée depuis ZoneMain au tableau
     	
-    	cartesselectionnees.remove(Integer.valueOf(Integer.parseInt(carte.getRecto())));
-    	//cartespourcombinaison.remove(carte.getRecto());
-    	//System.out.println(cartespourcombinaison);
+    	cartesjouables.remove(Integer.valueOf(Integer.parseInt(carte.getRecto())));
     	
     }
     

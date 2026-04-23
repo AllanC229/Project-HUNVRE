@@ -33,7 +33,7 @@ public class Partie extends Scene {
         ZoneSeb zoneSebAfficheCombinaison = new ZoneSeb();
         ControleurPartie controleurpartie = new ControleurPartie(zoneSebAfficheCombinaison); //Initialise le controleurpartie avec la zoneseb qui vient d'être instanciée
         ZoneMain zonemain = new ZoneMain(controleurpartie);		//Instancie les vues ZoneMain et ZoneSeb
-
+        ZoneScore zonescore = new ZoneScore(controleurpartie);
         GridPane partie = (GridPane) getRoot();
 		partie.setGridLinesVisible(true);
 		
@@ -60,7 +60,7 @@ public class Partie extends Scene {
 	
 	partie.add(new ZoneMenu(), 0, 0);
 	
-	partie.add(new ZoneScore(), 2, 0);
+	partie.add(zonescore, 2, 0);
 
 	partie.add(new ZoneCentrale(), 0, 1, 3, 1);	
 	

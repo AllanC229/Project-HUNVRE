@@ -86,7 +86,7 @@ public class ZoneMain extends Pane {
 		// --- Événements ---
         jouer.setOnAction(e -> {
         	//Pareil que quand on jette mais on rajoutera une fonction pour compter les points et les ajouter au score
-        	ZoneScore.afficherscorezonescore(50);
+        //	ZoneScore.afficherscorezonescore(50);
         	affichernouveautirage(deck, controleurpartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
         	controleurpartie.jetercartes(controleurpartie.cartesaffichees, mainCartes);
         });

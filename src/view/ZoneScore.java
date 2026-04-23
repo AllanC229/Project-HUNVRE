@@ -9,6 +9,24 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.FontWeight;
 
+// --- Classes du projet ---
+import controller.ControleurConnexion;
+
+/**
+ * ZoneScore — Vue qui affiche le score du coup en cours et le score total.
+ *
+ * 2026-04-13 - Vitally Lubin
+ * Cette classe était vide dans le code du 12 avril.
+ *
+ * TODO : ajouter un label "Objectif blinde : X"
+ * La valeur cible est stockée dans la colonne "blinde" de la table utilisateur en BDD.
+ * Elle doit être chargée à l'initialisation de la partie
+ * et comparée à joueur.getScore() après chaque coup.
+ * La vérification doit se faire dans ControleurPartie.jouer(), pas ici.
+ *
+ * TODO : renommer labelScoreBlinde en labelScoreCoup — "score blinde" est trompeur,
+ * c'est le score du coup joué, pas l'objectif blinde à atteindre.
+ */
 public class ZoneScore extends Pane {
 	
 	private HBox afficherscore = new HBox();

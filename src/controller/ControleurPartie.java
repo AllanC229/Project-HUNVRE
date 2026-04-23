@@ -1,28 +1,30 @@
 package controller;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+// --- java.* ---
 import java.util.List;
-import java.util.Map;
 
-import connection.DAOAcces;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+// --- Classes du projet ---
 import model.CarteJeu;
 import model.DeckJoueur;
 import view.ZoneMain;
 import view.ZoneScore;
 import model.Utilisateur;
+import view.ZoneCentrale;
+import view.ZoneDeck;
+import view.ZoneScore;
 import view.ZoneSeb;
 
+/**
+ * ControleurPartie — Contrôleur central qui relie toutes les zones de Partie.java.
+ *
+ * 2026-04-13 - Vitally Lubin
+ * C'est lui qui fait le lien entre ZoneMain, ZoneSeb, ZoneScore, ZoneCentrale, ZoneDeck.
+ * Instancié dans Partie.java et passé à ZoneMain qui l'appelle au clic des boutons.
+ *
+ * TODO : après chaque appel à calculerScore(), vérifier si joueur.getScore() >= objectif blinde.
+ * Si oui → déclencher la victoire de la blinde (changer de scène ou passer à la blinde suivante).
+ * La valeur cible de la blinde est dans la colonne "blinde" de la table utilisateur en BDD.
+ */
 public class ControleurPartie {
     
 	//Début code Allan
@@ -281,9 +283,6 @@ public class ControleurPartie {
     	cartesjouables.remove(Integer.valueOf(Integer.parseInt(carte.getRecto())));
     	
     }
-    
-    
-    //Fin des fonctions associées à la zoneMain
 
 	//Fin code Allan
     
@@ -292,37 +291,44 @@ public class ControleurPartie {
     
     // Fonctions associées à la zoneMenu
     
-    public static void sauvegarderPartie(Utilisateur joueur) {
-    	int tailleDeck = joueur.getDeck().getListedeck().size();
+    public static void sauvegarderPartie(Utilisateur joueur) {	//La fonction pour sauvegarder le deck du joueur dans la base de données
+    	int tailleDeck = joueur.getDeck().getListedeck().size();	//On récupère le nombre de cartes dans le deck
 		System.out.println(tailleDeck);
 		
 		System.out.println("Liste des cartes (si ça marche) :");
-		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
+		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");	//Connexion à la bdd
 		try {
 			int idJoueur = 0;
 			int idCarte = 0;
-			int qteCarte[] = new int[52];
+			int qteCarte[] = new int[52]; //Un tableau de 52 int, un pour chaque carte de base
 			
-			for(int i = 0; i < 52; i++) qteCarte[i] = 0;
+			for(int i = 0; i < 52; i++) qteCarte[i] = 0; //On s'assure que le compte de chaque carte de base commence bien à 0
 				
-			for(int i = 0; i < tailleDeck; i++) {
+			for(int i = 0; i < tailleDeck; i++) {	//Boucle qui ajoute 1 à la quantité d'une carte (
 				idCarte = joueur.getDeck().cherchercarte(i).getId();
 				qteCarte[idCarte - 1] += 1;
 			}
 			
 			PreparedStatement pstSauvegarde = dao.getConn().prepareStatement(
-					"SELECT id_utilisateur FROM utilisateur WHERE mail = ?");
+					"SELECT id_utilisateur FROM utilisateur WHERE mail = ?");	//Récupération de l'id du joueur actuel
 			pstSauvegarde.setString(1, ControleurConnexion.joueur.getMail());
 			ResultSet rsSauvegarde = pstSauvegarde.executeQuery();
 			while(rsSauvegarde.next()) {
 				idJoueur = rsSauvegarde.getInt(1);
 			}
 			
-			dao.getConn().setAutoCommit(false);
-			PreparedStatement insertion = dao.getConn().prepareStatement("DELETE FROM deck_carte WHERE ref_utilisateur = ?");
+			dao.getConn().setAutoCommit(false);	//Désactivation de l'auto-commit, afin de pouvoir préparer plusieurs requêtes avant envoi
+			PreparedStatement insertion = dao.getConn().prepareStatement("DELETE FROM deck_carte WHERE ref_utilisateur = ?");	//On supprime l'ancien deck sauvegardé
 			insertion.setInt(1, idJoueur);
 			insertion.executeUpdate();
 			
+			/*
+			 * La boucle permet de préparer une requête pour chaque carte de base.
+			 * On insère dans la table deck_carte un enregistrement avec comme valeurs :
+			 * - l'id du joueur
+			 * - l'id de la carte
+			 * - le nombre d'exemplaires de la carte
+			 */
 			for(int i = 0; i < 52; i++) {
 				insertion = dao.getConn().prepareStatement("INSERT INTO deck_carte VALUES (?, ?, ?)");
 				insertion.setInt(1, idJoueur);
@@ -331,7 +337,7 @@ public class ControleurPartie {
 				insertion.executeUpdate();
 			}
 			
-			dao.getConn().commit();
+			dao.getConn().commit();	//Envoie en une seule fois toutes les requêtes péparées
 			
 		
 		}
@@ -344,4 +350,6 @@ public class ControleurPartie {
     //Fin des fonctions associées à la zoneMenu
     
     //Fin code Jérome
+    
+    
 }

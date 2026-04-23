@@ -17,8 +17,7 @@ import model.DeckJoueur;
 import view.Partie;
 import view.TableauScore;
 
-
-	    
+    
 public class ControleurAccueil {
 
     private int direction;

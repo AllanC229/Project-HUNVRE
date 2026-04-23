@@ -8,6 +8,7 @@ import java.util.Optional;
 import app.MainApp;
 import connection.DAOAcces;
 import controller.ControleurConnexion;
+import controller.ControleurPartie;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -60,53 +61,8 @@ public class ZoneMenu extends Pane {
 			bsauvegarder.setOnAction(ef -> {
 				System.out.println("bsauvegarder cliqué");
 				stageoptions.close();
-				int tailleDeck = ControleurConnexion.joueur.getDeck().getListedeck().size();
-				System.out.println(tailleDeck);
-				
-				System.out.println("Liste des cartes (si ça marche) :");
-				DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
-				try {
-					int idJoueur = 0;
-					int idCarte = 0;
-					int qteCarte[] = new int[52];
-					
-					for(int i = 0; i < 52; i++) qteCarte[i] = 0;
-						
-					for(int i = 0; i < tailleDeck; i++) {
-						idCarte = ((CarteJeu) ControleurConnexion.joueur.getDeck().getListedeck().get(i)).getId();
-						qteCarte[idCarte - 1] += 1;
-					}
-					
-					PreparedStatement pstSauvegarde = dao.getConn().prepareStatement(
-							"SELECT id_utilisateur FROM utilisateur WHERE mail = ?");
-					pstSauvegarde.setString(1, ControleurConnexion.joueur.getMail());
-					ResultSet rsSauvegarde = pstSauvegarde.executeQuery();
-					while(rsSauvegarde.next()) {
-						idJoueur = rsSauvegarde.getInt(1);
-					}
-					
-					dao.getConn().setAutoCommit(false);
-					PreparedStatement insertion = dao.getConn().prepareStatement("DELETE FROM deck_carte WHERE ref_utilisateur = ?");
-					insertion.setInt(1, idJoueur);
-					insertion.executeUpdate();
-					
-					for(int i = 0; i < 52; i++) {
-						insertion = dao.getConn().prepareStatement("INSERT INTO deck_carte VALUES (?, ?, ?)");
-						insertion.setInt(1, idJoueur);
-						insertion.setInt(2, i + 1);
-						insertion.setInt(3, qteCarte[i]);
-						insertion.executeUpdate();
-					}
-					
-					dao.getConn().commit();
-					
-				
-				}
-				catch(SQLException e) {
-					e.printStackTrace();
-				}
-				dao.closeConnection();
-				
+				//Fonction de ControleurPartie pour sauvegarder
+				ControleurPartie.sauvegarderPartie(ControleurConnexion.joueur);
 			});
 			
 			baccueil.setOnAction(eg -> {
@@ -179,7 +135,7 @@ public class ZoneMenu extends Pane {
 				System.out.println("bcartes cliqué");
 				stageinfos.close();
 				DeckJoueur deckListe = ControleurConnexion.joueur.getDeck();
-				int tailleDeckInfos = deckListe.getListedeck().size();
+				int tailleDeckInfos = deckListe.size();
 				System.out.println(tailleDeckInfos + " cartes dans le deck");
 				
 				HBox ligneTrefle = new HBox();
@@ -201,7 +157,8 @@ public class ZoneMenu extends Pane {
 				
 				// Compte du nombre de cartes par couleur
 				for(int j = 0; j < tailleDeckInfos; j++) {
-					switch (((CarteJeu) deckListe.getListedeck().get(j)).getCouleur()) {
+					CarteJeu carte = (CarteJeu) deckListe.get(j);
+					switch (carte.getCouleur()) {
 					case "trefle":
 						compteTrefle += 1;
 						break;
@@ -219,7 +176,7 @@ public class ZoneMenu extends Pane {
 				
 				for(int i = 0; i < tailleDeckInfos; i++) {
 					
-					CarteJeu carteListe = (CarteJeu) deckListe.getListedeck().get(i);
+					CarteJeu carteListe = (CarteJeu) deckListe.get(i);
 					Image imageCarte = new Image(getClass().getResourceAsStream("/" + carteListe.getRecto() + ".jpg"));
 					ImageView lacarte = new ImageView(imageCarte);
 					lacarte.setFitWidth(60);
@@ -272,6 +229,46 @@ public class ZoneMenu extends Pane {
 				});
 				
 				stageListeCartes.show();
+			});
+			
+			bcombinaisons.setOnAction(em -> {
+				System.out.println("bcombinaisons cliqué");
+				stageinfos.close();
+				
+				Label combo1 = new Label("Carte haute : Si aucune autre combinaison n'est présente, alors la carte ayant la plus haute valeur sera prise en compte - placeholderpoints");
+				Label combo2 = new Label("Paire : Deux cartes de même valeur - placeholderpoints");
+				Label combo3 = new Label("Double paire : Deux cartes de même valeur avec deux autres cartes de même valeur - placeholderpoints");
+				Label combo4 = new Label("Brelan : Trois cartes de même valeur - placeholderpoints");
+				Label combo5 = new Label("Carré : Quatre cartes de même valeur - placeholderpoints");
+				Label combo6 = new Label("Suite : Cinq cartes à la suite avec au moins une couleur différente - placeholderpoints");
+				Label combo7 = new Label("Couleur : Cinq cartes de même couleur - placeholderpoints");
+				Label combo8 = new Label("Main pleine : Trois cartes de même valeur et deux cartes de même valeur. Les trois cartes et les deux cartes ne sont pas de la même couleur - placeholderpoints");
+				Label combo9 = new Label("Quinte Flush : Cinq cartes à la suite et de même couleur - placeholderpoints");
+				Label combo10 = new Label("Quinte Flush Royale : Une suite avec l'As, le Roi, la Dame, le Valet et le 10, tous de la même couleur - placeholderpoints");
+				
+				
+				Button bfermerInfoCombo = new Button("Fermer");
+				VBox ligneCombo = new VBox();
+				ligneCombo.setSpacing(10);
+				ligneCombo.setAlignment(Pos.CENTER);
+				ligneCombo.getChildren().addAll(combo1,combo2,combo3,combo4,combo5,combo6,combo7,combo8,combo9,combo10,bfermerInfoCombo);
+				
+				Scene sceneInfoCombo = new Scene(ligneCombo, 950, 450);
+				Stage stageInfoCombo = new Stage();
+				stageInfoCombo.setTitle("Liste des cartes");
+				stageInfoCombo.setResizable(false);
+				stageInfoCombo.setScene(sceneInfoCombo);
+				
+				Stage stageCombo = (Stage) binfos.getScene().getWindow();
+				stageInfoCombo.initOwner(stageCombo);
+				
+				bfermerInfoCombo.setOnAction(efermer -> {
+					System.out.println("bouton bfermerInfoCartes cliqué");
+					stageInfoCombo.close();
+				});
+				
+				stageInfoCombo.show();
+				
 			});
 			
 			breprendreInfos.setOnAction(el -> {

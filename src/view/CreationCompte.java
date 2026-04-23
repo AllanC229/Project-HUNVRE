@@ -35,6 +35,16 @@ public class CreationCompte extends Scene {
         PasswordField mdpChamps = new PasswordField();
         PasswordField confirmMdpChamps = new PasswordField();
         
+        // --- Image de fond via CSS ---
+        vbox.setStyle("""
+                -fx-background-image: url("/accueil.jpg");
+                -fx-background-size: cover;
+                -fx-background-position: center;
+                """);
+        
+        
+        
+        
         // Phrase de confirmation ou d'erreurs
         Label confirmationLabel = new Label();
         

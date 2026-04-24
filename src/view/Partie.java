@@ -1,37 +1,21 @@
 package view;
 
-import app.MainApp;
-import controller.ControleurPartie;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
+// --- javafx.* ---
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+
+// --- Classes du projet ---
+import controller.ControleurPartie;
 
 public class Partie extends Scene {
-	
-	
 
-	public Partie() {
+    public Partie() {
         super(new GridPane(), 1200, 900);
         ZoneSeb zoneSebAfficheCombinaison = new ZoneSeb();
-        ControleurPartie controleurpartie = new ControleurPartie(zoneSebAfficheCombinaison); //Initialise le controleurpartie avec la zoneseb qui vient d'être instanciée
+        ZoneScore zonescore = new ZoneScore();
+        ControleurPartie controleurpartie = new ControleurPartie(zoneSebAfficheCombinaison, zonescore); //Initialise le controleurpartie avec la zoneseb qui vient d'être instanciée
         ZoneMain zonemain = new ZoneMain(controleurpartie);		//Instancie les vues ZoneMain et ZoneSeb
 
         GridPane partie = (GridPane) getRoot();
@@ -60,7 +44,7 @@ public class Partie extends Scene {
 	
 	partie.add(new ZoneMenu(), 0, 0);
 	
-	partie.add(new ZoneScore(), 2, 0);
+	partie.add(zonescore, 2, 0);
 
 	partie.add(new ZoneCentrale(), 0, 1, 3, 1);	
 	

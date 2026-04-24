@@ -30,16 +30,17 @@ public class ZoneMain extends Pane {
 	
 	private ControleurPartie controleurpartie;
 	
-	//public void setControleur(ControleurPartie controleurpartie) { //La fonction qui permet d'associer  la zonemain le controleurpartie instancié dans la vue Partie
-		
-		
+	public static int index = 0; //L'index qui servira à lancer le premier tirage de cartes, et qui indique où on en est dans le tirage des cartes
 	
-	//}
-	
+
 	private HBox mainCartes;
+	private List<ImageView> cartesaffichees = new ArrayList<>(); //La liste qui contiendra les résultats de la fonction tiragecarte et qu'on utilise pour faire afficher les cartes dans la ZoneMain
 	
 	public ZoneMain(ControleurPartie controleurpartie) {
-
+		
+		DeckJoueur deck = controleurpartie.chargernouveaudeck();	//Appelle la fonction qui permet de charger un nouveau deck
+		Collections.shuffle(deck);	//Mélange aléatoirement les cartes du deck : notre entité deck contient maintenant les CarteJeu dans un ordre aléatoire
+	
 		this.controleurpartie = controleurpartie;
 		
 		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
@@ -84,26 +85,23 @@ public class ZoneMain extends Pane {
 		
 		// --- Événements ---
         jouer.setOnAction(e -> {
-            // à écrire
+        	//Pareil que quand on jette mais on rajoutera une fonction pour compter les points et les ajouter au score
+        //	ZoneScore.afficherscorezonescore(50);
+        	affichernouveautirage(deck, controleurpartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
+        	controleurpartie.jetercartes(controleurpartie.cartesaffichees, mainCartes);
         });
 
         jeter.setOnAction(e -> {
-        	// à écrire
+        	affichernouveautirage(deck, controleurpartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
+        	controleurpartie.jetercartes(controleurpartie.cartesaffichees, mainCartes);
+        	
+        	
         });
  	// Fin code Vitally - Boutons Jouer et Bouton Jeter
 
 	
 	// Debut code d'Allan	
-	// DeckJoueur deck = new DeckJoueur();
 
-	//List<CarteJeu> deck = new ArrayList<>(); //On instancie une entité deck
-
-	//Fonction chargerdeck ici
-	
-	
-	DeckJoueur deck = controleurpartie.chargernouveaudeck();	//Appelle la fonction qui permet de charger un nouveau deck
-	Collections.shuffle(deck);	//Mélange aléatoirement les cartes du deck : notre entité deck contient maintenant les CarteJeu dans un ordre aléatoire
-	
 	mainCartes = new HBox(); //Lignes 72 à 79 : on définit les parametres de la HBox qui contiendra l'affichage de nos cartes
 	mainCartes.setSpacing(10);
 	mainCartes.setAlignment(Pos.CENTER);
@@ -116,14 +114,30 @@ public class ZoneMain extends Pane {
 	mainCartes.setLayoutY(20);
 	// Fin modification Vitally
 	
+	
+	cartesaffichees = (controleurpartie.tiragecartes(deck, 8, index)); //On fait un premier tirage dans le deck avec 8 cartes, en partant de la position 0 dans le deck
+	
+	for (ImageView carte : cartesaffichees) {
+		mainCartes.getChildren().add(carte);
+	}
 	this.getChildren().add(mainCartes);
 	
 	
-	mainCartes = (controleurpartie.tiragecartes(deck));
-	
-	this.getChildren().add(mainCartes);	
 }
+
+	public int getIndex() {
+		return index;
+	}
+	public static void setIndex(int index) {
+		ZoneMain.index = index;
+	}
 	
+	private void affichernouveautirage(DeckJoueur deck, int taille, int index, HBox main) {	//Cette fonction permet de réaliser l'affichage d'un nouveau tirage de cartes dans ZoneMain. Elle prend en parametres le deck actuel, la taille du tirage, la position à partir de laquelle démarrer le tirage dans le deck (index) et la HBox zonemain actuelle
+		cartesaffichees = controleurpartie.tiragecartes(deck, taille, index);
+    	for (ImageView carte : cartesaffichees) {
+    		main.getChildren().add(carte);
+    	}
+	}
 	//Fin code d'Allan
 
 }

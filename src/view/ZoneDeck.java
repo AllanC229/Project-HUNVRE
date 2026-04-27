@@ -5,20 +5,40 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class ZoneDeck extends Pane {
+	
+	
 
-    private ImageView dosCarte;
-    private Label compteur;
+    private static ImageView dosCarte;
+    private static Label compteur;
 
-    private int cartesRestantes = 52;
-    private final int totalCartes = 52;
+    private static int cartesRestantes = 52;
+    private final static int totalCartes = 52;
 
     public ZoneDeck() {
 
+		Image fond = new Image(getClass().getResource("/lune.jpg").toExternalForm());
+
+		
+		BackgroundImage bg = new BackgroundImage(
+		        fond,
+		        BackgroundRepeat.NO_REPEAT,
+		        BackgroundRepeat.NO_REPEAT,
+		        BackgroundPosition.CENTER,
+		        BackgroundSize.DEFAULT
+		);
+
+		this.setBackground(new Background(bg));
+    	
         VBox layout = new VBox(8);
         layout.setAlignment(Pos.CENTER);
 
@@ -45,7 +65,7 @@ public class ZoneDeck extends Pane {
         dosCarte.setOnMouseClicked(e -> distribuerCarte());
     }
 
-    private void distribuerCarte() {
+    public static void distribuerCarte() {
 
         if (cartesRestantes <= 0) return;
 

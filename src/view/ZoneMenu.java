@@ -69,9 +69,9 @@ public class ZoneMenu extends Pane {
 			
 			bsauvegarder.setOnAction(ef -> {
 				System.out.println("bsauvegarder cliqué");
-				stageoptions.close();
-				//Fonction de ControleurPartie pour sauvegarder
 				ControleurPartie.sauvegarderPartie(ControleurConnexion.joueur);
+				stageoptions.close();
+				//Fonction de ControleurPartie pour sauvegarder				
 			});
 			
 			baccueil.setOnAction(eg -> {

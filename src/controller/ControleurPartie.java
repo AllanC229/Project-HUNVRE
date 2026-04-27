@@ -209,6 +209,7 @@ public class ControleurPartie {
 	    	
 	    	if (resultat.equals("victoire") && Partie.blinde == 3 && Partie.manche == 3) {
 	    		ZoneScore.findeblindeencours();
+	    		ControleurEcranDeFin.sauvegarderScore();	    		
 	    		EcranDeFin findujeu = new EcranDeFin(new VBox(), false);
 	    		MainApp.jeu.setScene(findujeu);
             	MainApp.jeu.show();
@@ -217,15 +218,7 @@ public class ControleurPartie {
 	    		ZoneScore.findeblindeencours();
 	    	}
 	    	else if (resultat.equals("perdu")) {
-	    		/*Alert alerte = new Alert(Alert.AlertType.CONFIRMATION,
-						"Perdu!!",
-						ButtonType.YES,
-						ButtonType.NO);
-				alerte.setTitle("Vous avez perdu!");
-				alerte.setHeaderText(null);				
-				if (alerte.showAndWait().get() == ButtonType.YES) {
-					Platform.exit();	//Ferme l'application
-				}*/
+	    		ControleurEcranDeFin.sauvegarderScore();
 	    		System.out.println("PERDU!!");
 	    		EcranDeFin findujeu = new EcranDeFin(new VBox(), true);
 	    		MainApp.jeu.setScene(findujeu);

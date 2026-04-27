@@ -12,7 +12,10 @@ import java.util.List;
 import java.sql.*;
 
 import connection.DAOAcces;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,44 +31,35 @@ import view.ZoneDeck;
 import view.ZoneScore;
 import view.ZoneSeb;
 
-/**
- * ControleurPartie — Contrôleur central qui relie toutes les zones de Partie.java.
- *
- * 2026-04-13 - Vitally Lubin
- * C'est lui qui fait le lien entre ZoneMain, ZoneSeb, ZoneScore, ZoneCentrale, ZoneDeck.
- * Instancié dans Partie.java et passé à ZoneMain qui l'appelle au clic des boutons.
- *
- * TODO : après chaque appel à calculerScore(), vérifier si joueur.getScore() >= objectif blinde.
- * Si oui → déclencher la victoire de la blinde (changer de scène ou passer à la blinde suivante).
- * La valeur cible de la blinde est dans la colonne "blinde" de la table utilisateur en BDD.
- */
+
 public class ControleurPartie {
     
 	//Début code Allan
-		private ZoneSeb zoneSebAfficheCombinaison;
+		private static ZoneSeb zoneSebAfficheCombinaison;
 		private ZoneScore zoneAfficheScore;
-		public ArrayList<Integer> cartesjouables = new ArrayList<Integer>();	//Ce tableau sert au calcul des scores : il contient les valeurs des cartes qu'on a selectionnées et est utilisé dans la fonction combinaisonactive
-		public List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees; ce tableau ne sert qu'à vérifier qu'on a bien 5 cartes ou moins selectionnées
-		public List<ImageView> cartesaffichees = new ArrayList<>();
-		
+		public static ArrayList<Integer> cartesjouables = new ArrayList<Integer>();	//Ce tableau sert au calcul des scores : il contient les valeurs des cartes qu'on a selectionnées et est utilisé dans la fonction combinaisonactive
+		public static List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees; ce tableau ne sert qu'à vérifier qu'on a bien 5 cartes ou moins selectionnées
+		public static List<ImageView> cartesaffichees = new ArrayList<>();
+		public static int multiplicateur = 1;
 	//Début des fonctions associées à la zoneSeb
 		
 		public ControleurPartie (ZoneSeb zoneSebAfficheCombinaison, ZoneScore zonescore) { //Le constructeur du controleurpartie, va probablement s'étoffer à mesure que le code se construit
-			this.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;	
+			ControleurPartie.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;	
 			this.zoneAfficheScore = zoneAfficheScore;
 		}
 		
-		public String combinaisonactive() {	//Fonction qui permet de terminer la combinaison de poker avec les cartes selectionnées
+		public static String combinaisonactive() {	//Fonction qui permet de determiner la combinaison de poker avec les cartes selectionnées
 
 		    String combinaison = "carte haute";
+		    
 
 		    HashMap<Integer, Integer> valeurs = new HashMap<>();
 		    HashMap<Integer, Integer> couleurs = new HashMap<>();
 
 		    // Comptage
-		    for (int carte : cartesjouables) {
-		        int valeur = carte % 13;
-		        int couleur = carte / 13;
+		    for (CarteJeu carte : cartesSelectionnees) {
+		        int valeur = Integer.parseInt(carte.getRecto()) % 13;	//A priori c'est ok mais je laisse un marqueur quand meme
+		        int couleur = Integer.parseInt(carte.getRecto()) / 13;	//J'etais en train de convertir ça en int pour utiliser le tableau cartesSElectionnees pour qu'à chaque fois que j'appelle combinaisonactive je reset mes variables et je recalcule la combinaison qui correspond à cartesSelectionnees
 
 		        valeurs.put(valeur, valeurs.getOrDefault(valeur, 0) + 1);
 		        couleurs.put(couleur, couleurs.getOrDefault(couleur, 0) + 1);
@@ -125,26 +119,34 @@ public class ControleurPartie {
 		    // Classement (ordre IMPORTANT)
 		    if (suite && couleur) {
 		        combinaison = "quinte flush";
+		        multiplicateur = 8;
 		    } else if (carre) {
 		        combinaison = "carré";
+		        multiplicateur = 7;
 		    } else if (brelan && paire) {
 		        combinaison = "full";
+		        multiplicateur = 6;
 		    } else if (couleur) {
 		        combinaison = "couleur";
+		        multiplicateur = 5;
 		    } else if (suite) {
 		        combinaison = "suite";
+		        multiplicateur = 4;
 		    } else if (brelan) {
 		        combinaison = "brelan";
+		        multiplicateur = 3;
 		    } else if (nbPaires == 2) {
 		        combinaison = "double paire";
+		        multiplicateur =  2;
 		    } else if (paire) {
 		        combinaison = "une paire";
+		        multiplicateur = 1;
 		    }
 		    
 		    return combinaison;
 		}
 		
-	    public void affichercombinaisonzoneseb(String combinaison) { //Permet d'afficher la chaine de caractères donnée en paramêtre dans la zone seb
+	    public static void affichercombinaisonzoneseb(String combinaison) { //Permet d'afficher la chaine de caractères donnée en paramêtre dans la zone seb
 	    	
 	    	zoneSebAfficheCombinaison.getChildren().clear();
 	    	HBox affiche = new HBox();
@@ -166,7 +168,52 @@ public class ControleurPartie {
 	    
 	    //Debut des fonctions associées à la zonescore
 	    
-
+	    public int comptagepoints (List<CarteJeu> cartesjouees) {
+	    	int pointsmarques = 0;
+	    	for (CarteJeu carte : cartesjouees) {
+	    		pointsmarques += carte.getValeurbase();	    	
+	    	}
+	    	pointsmarques *= multiplicateur;
+	    	multiplicateur = 1;
+	    	ZoneScore.scoretotal += pointsmarques;
+	    	return pointsmarques;
+	    }
+	    
+	    public String verifgagneperd (int score) {
+	    	
+	    		String resultat = "continue";
+	    	
+	    	if (score >= ZoneScore.scoreamarquer) {
+	    		resultat = "victoire";
+	    		return resultat;
+	    	}
+	    	else if (score < ZoneScore.scoreamarquer && ZoneMain.mainsjouables != 0) {
+	    		return resultat;
+	    	}
+	    	else if (score < ZoneScore.scoreamarquer && ZoneMain.mainsjouables < 0) {
+	    		resultat = "perdu";
+	    		return resultat;
+	    	}
+	    	return resultat;
+	    }
+	    
+	    public void gagneouperd (String resultat) { //Prend en compte la fonction verifgagneperd au dessus : si victoire = false, pas gagné mais pas perdu non plus, on continue. si victoire = true, gagné, si defaite= true, perdu
+	    	
+	    	if (resultat.equals("victoire")) {
+	    		ZoneScore.findeblindeencours();
+	    	}
+	    	else if (resultat.equals("perdu")) {
+	    		Alert alerte = new Alert(Alert.AlertType.CONFIRMATION,
+						"Perdu!!",
+						ButtonType.YES,
+						ButtonType.NO);
+				alerte.setTitle("Vous avez perdu!");
+				alerte.setHeaderText(null);				
+				if (alerte.showAndWait().get() == ButtonType.YES) {
+					Platform.exit();	//Ferme l'application
+				}
+	    	}
+	    }
 	    
 	    //Fin des fonctions associées à la zonescore
 		
@@ -220,7 +267,7 @@ public class ControleurPartie {
 		zoneSebAfficheCombinaison.getChildren().clear(); //
 	}
 	
-	public List<ImageView> tiragecartes(DeckJoueur deck, int nombretirage, int debuttirage) {		//La fonction qui permet de faire un tirage d'un certain nombre de cartes dans le deck, et de les stocker sous forme d'une liste d'imageview qui seront plus tard ajoutées à la HBox de ZoneMain
+	public static List<ImageView> tiragecartes(DeckJoueur deck, int nombretirage, int debuttirage) {		//La fonction qui permet de faire un tirage d'un certain nombre de cartes dans le deck, et de les stocker sous forme d'une liste d'imageview qui seront plus tard ajoutées à la HBox de ZoneMain
 		
 		List<ImageView> cartestirees = new ArrayList<>();	//La liste qui contiendra les cartes tirées et qui sera retournée à la fin de la fonction
 		int n = debuttirage + nombretirage; //ça correspond à l'index jusqu'auquel on va tirer des cartes
@@ -229,7 +276,7 @@ public class ControleurPartie {
 
 		    CarteJeu cartejeu = (CarteJeu) deck.get(i);	//On récupère l'objet CarteJeu qui se trouve dans deck à la position i
 		    
-		    Image image = new Image(getClass().getResourceAsStream("/" + cartejeu.getRecto() + ".jpg")); //On récupère l'image recto associée à la carte
+		    Image image = new Image(ControleurPartie.class.getResourceAsStream("/" + cartejeu.getRecto() + ".jpg")); //On récupère l'image recto associée à la carte
 		    ImageView carte = new ImageView(image);			//Et on crée une ImageView qui s'appelle carte avec l'image qu'on à récupérée									
 		    
 		    carte.setFitWidth(80);
@@ -286,13 +333,13 @@ public class ControleurPartie {
 		
 	}
 
-    public void ajoutercartejouable (CarteJeu carte) {	//La fonction pour ajouter la carte selectionnée depuis ZoneMain au tableau
+    public static void ajoutercartejouable (CarteJeu carte) {	//La fonction pour ajouter la carte selectionnée depuis ZoneMain au tableau
     
     	cartesjouables.add(Integer.parseInt(carte.getRecto()));   	
     	
     }
    
-    public void retirercartejouable (CarteJeu carte) {	//La fonction pour retirer la carte selectionnée depuis ZoneMain au tableau
+    public static void retirercartejouable (CarteJeu carte) {	//La fonction pour retirer la carte selectionnée depuis ZoneMain au tableau
     	
     	cartesjouables.remove(Integer.valueOf(Integer.parseInt(carte.getRecto())));
     	

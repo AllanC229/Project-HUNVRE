@@ -10,6 +10,12 @@ import java.util.Map;          // Type générique retourné par compterOccurren
 // --- javafx.* ---
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -24,6 +30,19 @@ public class ZoneSeb extends Pane {
     public ZoneSeb() {
  
 
+		Image fond = new Image(getClass().getResource("/lune.jpg").toExternalForm());
+
+		
+		BackgroundImage bg = new BackgroundImage(
+		        fond,
+		        BackgroundRepeat.NO_REPEAT,
+		        BackgroundRepeat.NO_REPEAT,
+		        BackgroundPosition.CENTER,
+		        BackgroundSize.DEFAULT
+		);
+
+		this.setBackground(new Background(bg));
+    	
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
       

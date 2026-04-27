@@ -10,6 +10,9 @@ import javafx.scene.layout.RowConstraints;
 import controller.ControleurPartie;
 
 public class Partie extends Scene {
+	
+	public static int manche = 1;
+	public static int blinde = 1;
 
     public Partie() {
         super(new GridPane(), 1200, 900);
@@ -17,7 +20,7 @@ public class Partie extends Scene {
         ZoneScore zonescore = new ZoneScore();
         ControleurPartie controleurpartie = new ControleurPartie(zoneSebAfficheCombinaison, zonescore); //Initialise le controleurpartie avec la zoneseb qui vient d'être instanciée
         ZoneMain zonemain = new ZoneMain(controleurpartie);		//Instancie les vues ZoneMain et ZoneSeb
-
+        ZoneCentrale zonecentrale = new ZoneCentrale();
         GridPane partie = (GridPane) getRoot();
 		partie.setGridLinesVisible(true);
 		
@@ -46,9 +49,8 @@ public class Partie extends Scene {
 	
 	partie.add(zonescore, 2, 0);
 
-	partie.add(new ZoneCentrale(), 0, 1, 3, 1);	
-	
-	
+	partie.add(zonecentrale, 0, 1, 3, 1);	
+		
 	partie.add(zoneSebAfficheCombinaison, 0, 2);
 	
 	partie.add(zonemain, 1, 2);	

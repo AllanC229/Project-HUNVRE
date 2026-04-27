@@ -19,6 +19,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import controller.ControleurConnexion;
 import controller.ControleurPartie;
@@ -28,33 +29,48 @@ import model.DeckJoueur;
 
 public class ZoneMain extends Pane {
 	
-	private ControleurPartie controleurpartie;
+	private static ControleurPartie controleurpartie;
 	
 	public static int index = 0; //L'index qui servira à lancer le premier tirage de cartes, et qui indique où on en est dans le tirage des cartes
-	
+	public static DeckJoueur deck;
 
 	private HBox mainCartes;
+	public static int mainsjouables = 4;
+	public static int mainsjetables = 4;
+	static Label affichemainsjouables = new Label("Jouables : "+ mainsjouables +"");	
+	static Label affichemainsjetables = new Label("Jetables : "+ mainsjetables +"");
 	private List<ImageView> cartesaffichees = new ArrayList<>(); //La liste qui contiendra les résultats de la fonction tiragecarte et qu'on utilise pour faire afficher les cartes dans la ZoneMain
 	
 	public ZoneMain(ControleurPartie controleurpartie) {
 		
-		DeckJoueur deck = controleurpartie.chargernouveaudeck();	//Appelle la fonction qui permet de charger un nouveau deck
-		Collections.shuffle(deck);	//Mélange aléatoirement les cartes du deck : notre entité deck contient maintenant les CarteJeu dans un ordre aléatoire
+		affichemainsjouables.setStyle("""
+		   		-fx-font-size: 19px;
+				-fx-font-weight: bold;
+				-fx-text-fill: linear-gradient(to right, #ffffff, #cfcfcf);
+				-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.25), 8, 0.5, 0, 0);
+		   		""");
+		
+		affichemainsjetables.setStyle("""
+		   		-fx-font-size: 19px;
+				-fx-font-weight: bold;
+				-fx-text-fill: linear-gradient(to right, #ffffff, #cfcfcf);
+				-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.25), 8, 0.5, 0, 0);
+		   		""");
+		
 	
 		this.controleurpartie = controleurpartie;
 		
 		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
 
+		deck = controleurpartie.chargernouveaudeck();	//Appelle la fonction qui permet de charger un nouveau deck
+		Collections.shuffle(deck);	//Mélange aléatoirement les cartes du deck : notre entité deck contient maintenant les CarteJeu dans un ordre aléatoire
+			
 		BackgroundImage bg = new BackgroundImage(
 		        bandofond,
 		        BackgroundRepeat.NO_REPEAT,
 		        BackgroundRepeat.NO_REPEAT,
 		        BackgroundPosition.CENTER,
-		        new BackgroundSize(
-		                100, 100,
-		                true, true,
-		                true, false
-		        )
+		        BackgroundSize.DEFAULT
 		);
 
 		this.setBackground(new Background(bg));
@@ -73,7 +89,7 @@ public class ZoneMain extends Pane {
 		// On place les boutons dans une HBox pour pouvoir les centrer ensemble
 		// Même principe que pour les cartes : (largeur du Pane - largeur de la HBox) / 2
 		HBox boutons = new HBox(10);
-		boutons.getChildren().addAll(jouer, jeter);
+		boutons.getChildren().addAll(affichemainsjouables, jouer, jeter, affichemainsjetables);
 		boutons.layoutXProperty().bind(this.widthProperty().subtract(boutons.widthProperty()).divide(2));
 		boutons.setLayoutY(160);
 		this.getChildren().add(boutons);
@@ -85,17 +101,53 @@ public class ZoneMain extends Pane {
 		
 		// --- Événements ---
         jouer.setOnAction(e -> {
-        	//Pareil que quand on jette mais on rajoutera une fonction pour compter les points et les ajouter au score
-        //	ZoneScore.afficherscorezonescore(50);
-        	affichernouveautirage(deck, controleurpartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
-        	controleurpartie.jetercartes(controleurpartie.cartesaffichees, mainCartes);
+        	
+	        if (ControleurPartie.cartesSelectionnees.size() > 0) {
+	        	
+	        	mainsjouables --;
+	        	
+	        	if (mainsjouables >= 0) {
+	        		
+	        		affichemainsjouables.setText("Jouables : "+ mainsjouables +"");
+	        		
+	        	}
+	        	
+	        	for (CarteJeu carte : ControleurPartie.cartesSelectionnees) {
+	        		ZoneDeck.distribuerCarte();    		
+	        	}
+	
+	        	ZoneCentrale.affichercartesjouees(ControleurPartie.cartesSelectionnees, controleurpartie.comptagepoints(ControleurPartie.cartesSelectionnees));
+	        	
+	        	ZoneScore.afficherscorezonescore();
+	        	
+	        	controleurpartie.gagneouperd(controleurpartie.verifgagneperd(ZoneScore.scoretotal));
+	        		        		        	
+	        	affichernouveautirage(deck, ControleurPartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
+	        	
+	        	controleurpartie.jetercartes(ControleurPartie.cartesaffichees, mainCartes);
+        	 
+        	}
         });
 
         jeter.setOnAction(e -> {
-        	affichernouveautirage(deck, controleurpartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
-        	controleurpartie.jetercartes(controleurpartie.cartesaffichees, mainCartes);
         	
-        	
+        	if (ControleurPartie.cartesSelectionnees.size() > 0) {
+	        	
+	        	if (mainsjetables != 0) {
+	        		mainsjetables --;
+	        		affichemainsjetables.setText("Jetables : "+ mainsjetables +"");
+	        	
+	        	for (CarteJeu carte : ControleurPartie.cartesSelectionnees) {
+	        		ZoneDeck.distribuerCarte();    		
+	        	}
+	        	
+	        	affichernouveautirage(deck, ControleurPartie.cartesSelectionnees.size(), ZoneMain.index, mainCartes);
+	        	controleurpartie.jetercartes(ControleurPartie.cartesaffichees, mainCartes);
+	        	}
+	        	else {
+	        		System.out.println("Plus de mains jetables!!");
+	        	}
+        	}
         });
  	// Fin code Vitally - Boutons Jouer et Bouton Jeter
 
@@ -105,9 +157,6 @@ public class ZoneMain extends Pane {
 	mainCartes = new HBox(); //Lignes 72 à 79 : on définit les parametres de la HBox qui contiendra l'affichage de nos cartes
 	mainCartes.setSpacing(10);
 	mainCartes.setAlignment(Pos.CENTER);
-	
-	//mainCartes.setLayoutX(20);
-	//mainCartes.setLayoutY(20);
 	
 	// Début modification Vitally - centrage des cartes
 	mainCartes.layoutXProperty().bind(this.widthProperty().subtract(mainCartes.widthProperty()).divide(2));
@@ -133,7 +182,7 @@ public class ZoneMain extends Pane {
 	}
 	
 	private void affichernouveautirage(DeckJoueur deck, int taille, int index, HBox main) {	//Cette fonction permet de réaliser l'affichage d'un nouveau tirage de cartes dans ZoneMain. Elle prend en parametres le deck actuel, la taille du tirage, la position à partir de laquelle démarrer le tirage dans le deck (index) et la HBox zonemain actuelle
-		cartesaffichees = controleurpartie.tiragecartes(deck, taille, index);
+		cartesaffichees = ControleurPartie.tiragecartes(deck, taille, index);
     	for (ImageView carte : cartesaffichees) {
     		main.getChildren().add(carte);
     	}

@@ -8,12 +8,13 @@ public class Utilisateur {
     private DeckJoueur deck;
     private String role = "joueur";
 
+
     // 2026-04-13 - Vitally Lubin
     // Ajout de l'attribut score pour stocker le score de la partie en cours.
     // Cet attribut est alimenté par ZoneSeb via setScore() à chaque combinaison jouée.
     // Il est lu par EcranDeFin via getScore() pour afficher le score final.
     // Il est sauvegardé en BDD par ControleurEcranDeFin.sauvegarderScore() en fin de partie.
-    private int score;
+    private int score = 0;
 
     public Utilisateur(String pseudo, String mail, DeckJoueur deck, String role) {
         this.pseudo = pseudo;
@@ -65,5 +66,8 @@ public class Utilisateur {
 
     public void setScore(int score) {
         this.score = score;
+    }
+    public void cumulscore (int score) { //Permet d'augmenter le score total du joueur à mesure que la partie avance dans le but de l'enregistrer en BDD à la fin
+    	this.score = this.score + score;
     }
 }

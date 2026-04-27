@@ -19,9 +19,9 @@ public class ZoneDeck extends Pane {
 	
 
     private static ImageView dosCarte;
-    private static Label compteur;
+    public static Label compteur;
 
-    private static int cartesRestantes = 52;
+    static int cartesRestantes = 52;
     private final static int totalCartes = 52;
 
     public ZoneDeck() {

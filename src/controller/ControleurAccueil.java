@@ -19,7 +19,8 @@ import view.TableauScore;
 
     
 public class ControleurAccueil {
-
+	
+	static Partie partie = new Partie();
     private int direction;
     
     ArrayList<Integer> scores = new ArrayList<Integer>();
@@ -55,7 +56,7 @@ public class ControleurAccueil {
 				e.printStackTrace();
 			}
             
-            MainApp.jeu.setScene(new Partie());
+            MainApp.jeu.setScene(partie);
             MainApp.jeu.setFullScreen(true);
             MainApp.jeu.show();
         }

@@ -11,11 +11,14 @@ import controller.ControleurPartie;
 
 public class Partie extends Scene {
 	
-	public static int manche = 1;
-	public static int blinde = 1;
+	public static int manche;
+	public static int blinde;
 
     public Partie() {
+    	
         super(new GridPane(), 1200, 900);
+        manche = 1;
+        blinde = 1;
         ZoneSeb zoneSebAfficheCombinaison = new ZoneSeb();
         ZoneScore zonescore = new ZoneScore();
         ControleurPartie controleurpartie = new ControleurPartie(zoneSebAfficheCombinaison, zonescore); //Initialise le controleurpartie avec la zoneseb qui vient d'être instanciée

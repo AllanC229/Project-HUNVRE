@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.HashMap;
 // --- java.* ---
 import java.util.List;
+
+import app.MainApp;
+
 import java.sql.*;
 
 import connection.DAOAcces;
@@ -19,13 +22,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 // --- Classes du projet ---
 import model.CarteJeu;
 import model.DeckJoueur;
 import view.ZoneMain;
 import view.ZoneScore;
 import model.Utilisateur;
+import view.EcranDeFin;
+import view.Partie;
+import view.TableauScore;
 import view.ZoneCentrale;
 import view.ZoneDeck;
 import view.ZoneScore;
@@ -190,7 +198,7 @@ public class ControleurPartie {
 	    	else if (score < ZoneScore.scoreamarquer && ZoneMain.mainsjouables != 0) {
 	    		return resultat;
 	    	}
-	    	else if (score < ZoneScore.scoreamarquer && ZoneMain.mainsjouables < 0) {
+	    	else if (score < ZoneScore.scoreamarquer && ZoneMain.mainsjouables == 0) {
 	    		resultat = "perdu";
 	    		return resultat;
 	    	}
@@ -199,11 +207,17 @@ public class ControleurPartie {
 	    
 	    public void gagneouperd (String resultat) { //Prend en compte la fonction verifgagneperd au dessus : si victoire = false, pas gagné mais pas perdu non plus, on continue. si victoire = true, gagné, si defaite= true, perdu
 	    	
+	    	if (resultat.equals("victoire") && Partie.blinde == 3 && Partie.manche == 3) {
+	    		ZoneScore.findeblindeencours();
+	    		EcranDeFin findujeu = new EcranDeFin(new VBox(), false);
+	    		MainApp.jeu.setScene(findujeu);
+            	MainApp.jeu.show();
+	    	}
 	    	if (resultat.equals("victoire")) {
 	    		ZoneScore.findeblindeencours();
 	    	}
 	    	else if (resultat.equals("perdu")) {
-	    		Alert alerte = new Alert(Alert.AlertType.CONFIRMATION,
+	    		/*Alert alerte = new Alert(Alert.AlertType.CONFIRMATION,
 						"Perdu!!",
 						ButtonType.YES,
 						ButtonType.NO);
@@ -211,8 +225,12 @@ public class ControleurPartie {
 				alerte.setHeaderText(null);				
 				if (alerte.showAndWait().get() == ButtonType.YES) {
 					Platform.exit();	//Ferme l'application
-				}
-	    	}
+				}*/
+	    		System.out.println("PERDU!!");
+	    		EcranDeFin findujeu = new EcranDeFin(new VBox(), true);
+	    		MainApp.jeu.setScene(findujeu);
+            	MainApp.jeu.show();
+	    	} 
 	    }
 	    
 	    //Fin des fonctions associées à la zonescore

@@ -31,17 +31,22 @@ public class ZoneMain extends Pane {
 	
 	private static ControleurPartie controleurpartie;
 	
-	public static int index = 0; //L'index qui servira à lancer le premier tirage de cartes, et qui indique où on en est dans le tirage des cartes
+	public static int index; //L'index qui servira à lancer le premier tirage de cartes, et qui indique où on en est dans le tirage des cartes
 	public static DeckJoueur deck;
 
 	private HBox mainCartes;
-	public static int mainsjouables = 4;
-	public static int mainsjetables = 4;
-	static Label affichemainsjouables = new Label("Jouables : "+ mainsjouables +"");	
-	static Label affichemainsjetables = new Label("Jetables : "+ mainsjetables +"");
+	public static int mainsjouables;
+	public static int mainsjetables;
+	static Label affichemainsjouables = new Label();	
+	static Label affichemainsjetables = new Label();
 	private List<ImageView> cartesaffichees = new ArrayList<>(); //La liste qui contiendra les résultats de la fonction tiragecarte et qu'on utilise pour faire afficher les cartes dans la ZoneMain
 	
 	public ZoneMain(ControleurPartie controleurpartie) {
+		index = 0;
+		mainsjouables = 4;
+		mainsjetables = 4;
+		affichemainsjouables.setText("Jouables : "+ mainsjouables +"");
+		affichemainsjetables.setText("Jetables : "+ mainsjetables +"");
 		
 		affichemainsjouables.setStyle("""
 		   		-fx-font-size: 19px;
@@ -58,7 +63,7 @@ public class ZoneMain extends Pane {
 		   		""");
 		
 	
-		this.controleurpartie = controleurpartie;
+		ZoneMain.controleurpartie = controleurpartie;
 		
 		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
 

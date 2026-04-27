@@ -16,16 +16,24 @@ import controller.ControleurConnexion;
 
 public class ZoneScore extends Pane {
 	
-	private static VBox afficher = new VBox();
-	public static int scoretotal = 0;
-	public static float scoreamarquer = 100;
-	public static Label scoreaffiche = new Label("Score actuel : " + scoretotal + "");
-	public static Label mancheencours = new Label("Manche en cours : " + Partie.manche +" /5");
-	public static Label blindeencours = new Label("Blinde en cours : " + Partie.blinde +" /3");
-	public static Label affichescoreamarquer = new Label("Score à marquer : "+ scoreamarquer +"");
+	private static VBox afficher;
+	public static int scoretotal;
+	public static float scoreamarquer;
+	public static Label scoreaffiche = new Label();
+	public static Label mancheencours = new Label();
+	public static Label blindeencours = new Label();
+	public static Label affichescoreamarquer = new Label();
 	
 	public ZoneScore () {
-
+		afficher = new VBox();
+		scoretotal = 0;
+		scoreamarquer = 100;
+		scoreaffiche.setText("Score actuel : " + scoretotal + "");
+		mancheencours.setText("Manche en cours : " + Partie.manche +" /5");
+		blindeencours.setText("Blinde en cours : " + Partie.blinde +" /3");
+		affichescoreamarquer.setText("Score à marquer : "+ scoreamarquer +"");
+		
+		
 		afficher.setAlignment(Pos.CENTER);
 		
 		
@@ -104,6 +112,8 @@ public class ZoneScore extends Pane {
     	afficherscorezonescore();
     	Collections.shuffle(ZoneMain.deck);
     	ControleurPartie.tiragecartes(ZoneMain.deck, 8, ZoneMain.index);
+    	ZoneDeck.cartesRestantes = 52;
+    	ZoneDeck.compteur.setText(""+ZoneDeck.cartesRestantes+"/52");
 
     }
     

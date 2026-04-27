@@ -2,6 +2,7 @@ package view;
 
 import app.MainApp;
 import controller.ControleurConnexion;
+import controller.ControleurEcranDeFin;
 import controller.ControleurPartie;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -59,7 +60,8 @@ public class ZoneMenu extends Pane {
 			
 			bsauvegarder.setOnAction(ef -> {
 				System.out.println("bsauvegarder cliqué");
-				ControleurPartie.sauvegarderPartie(ControleurConnexion.joueur);
+				//ControleurPartie.sauvegarderPartie(ControleurConnexion.joueur);
+				ControleurEcranDeFin.sauvegarderScore();
 				stageoptions.close();
 				//Fonction de ControleurPartie pour sauvegarder				
 			});

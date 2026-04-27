@@ -53,8 +53,9 @@ public class EcranDeFin extends Scene {
         vbox.setPadding(new Insets(30));
         vbox.setMaxWidth(350);
         vbox.setAlignment(Pos.CENTER);
+        
 
-        nouvellePartie.setOnAction(e -> {
+        nouvellePartie.setOnAction(e -> {       	
             new ControleurEcranDeFin(1);
         });
 

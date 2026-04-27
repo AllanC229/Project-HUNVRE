@@ -18,12 +18,6 @@ public class ControleurEcranDeFin {
 
     public ControleurEcranDeFin(int choix) {
 
-        // 2026-04-13 - Vitally Lubin
-        // On sauvegarde le score en BDD avant tout changement de scène.
-        // Si le score actuel est meilleur que le score existant → UPDATE.
-        // Voir la méthode sauvegarderScore() ci-dessous.
-        sauvegarderScore();
-
         if (choix == 1) {
             System.out.println("Nouvelle partie !");
 
@@ -54,9 +48,13 @@ public class ControleurEcranDeFin {
             // 2026-04-13 - Vitally Lubin
             // Remise à zéro du score pour la nouvelle partie
             ControleurConnexion.joueur.setScore(0);
-
+            
+            ControleurAccueil.partie = null;
+            
             Partie partie = new Partie();
+            
             MainApp.jeu.setScene(partie);
+            MainApp.jeu.setFullScreen(true);          
             MainApp.jeu.show();
         }
 
@@ -79,7 +77,7 @@ public class ControleurEcranDeFin {
     // on compare avec le score actuel en mémoire,
     // et on fait un UPDATE seulement si c'est un nouveau record.
     // La colonne score est NULL par défaut en BDD — tout score > 0 sera donc sauvegardé.
-    private void sauvegarderScore() {
+    public static void sauvegarderScore() {
         int scoreActuel = ControleurConnexion.joueur.getScore();
         String mail = ControleurConnexion.joueur.getMail();
 

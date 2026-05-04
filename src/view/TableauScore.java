@@ -18,16 +18,16 @@ public class TableauScore extends Scene {
 	ArrayList<String> noms;
 	ArrayList<Integer> scores;
 	
-	public TableauScore(GridPane grid/*VBox vbox*/, ArrayList<String> noms, ArrayList<Integer> scores) {
+	public TableauScore(GridPane grid, ArrayList<String> noms, ArrayList<Integer> scores) {
 		
-		super(grid/*vbox*/, 800, 600);
+		super(grid, 800, 600);
 		grid.setAlignment(Pos.CENTER);
 		this.noms = noms;
 		this.scores = scores;
 		
 		
 		
-		//GridPane grid = new GridPane();
+	
 		grid.setHgap(20);
 		grid.setVgap(20);
 		

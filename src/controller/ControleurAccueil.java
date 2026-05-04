@@ -20,13 +20,13 @@ import view.TableauScore;
 public class ControleurAccueil {
 	
 	static Partie partie = new Partie();
-    private int direction;
+    
     
     ArrayList<Integer> scores = new ArrayList<Integer>();
     ArrayList<String> pseudos = new ArrayList<String>();
 
     public ControleurAccueil(int direction) {
-        this.direction = direction;
+        
 
         if (direction == 1) {
             System.out.println("Vous êtes arrivés sur le profil");
@@ -38,26 +38,25 @@ public class ControleurAccueil {
             DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
             
             try {
-                ResultSet listeCarte = dao.getStatement().executeQuery(
-                    "SELECT id_carte, valeur, recto, couleur FROM carte;"
-                );
-                
-                ControleurConnexion.joueur.setDeck(new DeckJoueur());
-                
-                while(listeCarte.next()) {
-                    ControleurConnexion.joueur.getDeck().add(new CarteJeu(
-                        listeCarte.getInt(1),
-                        listeCarte.getInt(2),
-                        listeCarte.getString(3),
-                        1,
-                        listeCarte.getString(4)
-                    ));
-                }
-            }
-            catch(SQLException e) {
-                System.out.println("Accueil - Recup deck - Ereur SQL");
-                e.printStackTrace();
-            }
+				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
+				
+				ControleurConnexion.joueur.setDeck(new DeckJoueur());
+				
+				
+				
+				while(listeCarte.next()) {
+					ControleurConnexion.joueur.getDeck().add(new CarteJeu(
+							listeCarte.getInt(1),
+							listeCarte.getInt(2),
+							listeCarte.getString(3),
+							1,
+							listeCarte.getString(4)));
+				}
+			}
+			catch(SQLException e) {
+				System.out.println("Accueil - Recup deck - Ereur SQL");
+				e.printStackTrace();
+			}
             
             MainApp.jeu.setScene(partie);
             MainApp.jeu.setFullScreen(true);

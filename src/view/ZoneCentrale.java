@@ -38,7 +38,7 @@ public class ZoneCentrale extends Pane {
 		affichagecartes.setSpacing(30);
 		affichagecartes.setAlignment(Pos.CENTER);
 		
-		affichagecartes.layoutXProperty().bind( widthProperty().subtract(affichagecartes.widthProperty()).divide(2)); //Ces deux lignes là sont pour centrer la HBox affichagecartes dans le Pane ZoneCentrale
+		affichagecartes.layoutXProperty().bind(widthProperty().subtract(affichagecartes.widthProperty()).divide(2)); //Ces deux lignes là sont pour centrer la HBox affichagecartes dans le Pane ZoneCentrale
 		affichagecartes.layoutYProperty().bind(heightProperty().subtract(affichagecartes.heightProperty()).divide(2));
 		
 		affichagescore.setAlignment(Pos.CENTER);

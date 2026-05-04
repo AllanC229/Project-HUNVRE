@@ -59,7 +59,7 @@ public class ControleurConnexion {
                 		
                 	}
                 	
-                    stage.setScene(new Accueil(new VBox()));  //Il faudra rajouter la création d'une instance d'Utilisateur avec les infos récupérées depuis la base de données (rôle, deck, pseudo)
+                    stage.setScene(new Accueil(new VBox()));  
                 } else {
                     System.out.println("Identifiants incorrects !");
                     // TODO : afficher message d'erreur dans la vue

@@ -45,15 +45,19 @@ public class ControleurPartie {
 	//Début code Allan
 		private static ZoneSeb zoneSebAfficheCombinaison;
 		private ZoneScore zoneAfficheScore;
-		public static ArrayList<Integer> cartesjouables = new ArrayList<Integer>();	//Ce tableau sert au calcul des scores : il contient les valeurs des cartes qu'on a selectionnées et est utilisé dans la fonction combinaisonactive
-		public static List<CarteJeu> cartesSelectionnees = new ArrayList<>(); //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees; ce tableau ne sert qu'à vérifier qu'on a bien 5 cartes ou moins selectionnées
-		public static List<ImageView> cartesaffichees = new ArrayList<>();
-		public static int multiplicateur = 1;
+		public static ArrayList<Integer> cartesjouables;	//Ce tableau sert au calcul des scores : il contient les valeurs des cartes qu'on a selectionnées et est utilisé dans la fonction combinaisonactive
+		public static List<CarteJeu> cartesSelectionnees; //Definition d'un tableau qui contiendra les cartes qu'on a selectionnees; ce tableau ne sert qu'à vérifier qu'on a bien 5 cartes ou moins selectionnées
+		public static List<ImageView> cartesaffichees;
+		public static int multiplicateur;
 	//Début des fonctions associées à la zoneSeb
 		
 		public ControleurPartie (ZoneSeb zoneSebAfficheCombinaison, ZoneScore zonescore) { //Le constructeur du controleurpartie, va probablement s'étoffer à mesure que le code se construit
 			ControleurPartie.zoneSebAfficheCombinaison = zoneSebAfficheCombinaison;	
 			this.zoneAfficheScore = zoneAfficheScore;
+			cartesaffichees = new ArrayList<>();
+			cartesSelectionnees = new ArrayList<>();
+			cartesjouables = new ArrayList<Integer>();
+			multiplicateur = 1;
 		}
 		
 		public static String combinaisonactive() {	//Fonction qui permet de determiner la combinaison de poker avec les cartes selectionnées

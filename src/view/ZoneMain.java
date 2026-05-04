@@ -39,10 +39,11 @@ public class ZoneMain extends Pane {
 	public static int mainsjetables;
 	static Label affichemainsjouables = new Label();	
 	static Label affichemainsjetables = new Label();
-	private List<ImageView> cartesaffichees = new ArrayList<>(); //La liste qui contiendra les résultats de la fonction tiragecarte et qu'on utilise pour faire afficher les cartes dans la ZoneMain
+	private List<ImageView> cartesaffichees; //La liste qui contiendra les résultats de la fonction tiragecarte et qu'on utilise pour faire afficher les cartes dans la ZoneMain
 	
 	public ZoneMain(ControleurPartie controleurpartie) {
 		index = 0;
+		cartesaffichees = new ArrayList<>();
 		mainsjouables = 4;
 		mainsjetables = 4;
 		affichemainsjouables.setText("Jouables : "+ mainsjouables +"");
@@ -65,11 +66,10 @@ public class ZoneMain extends Pane {
 	
 		ZoneMain.controleurpartie = controleurpartie;
 		
-		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
-
 		deck = controleurpartie.chargernouveaudeck();	//Appelle la fonction qui permet de charger un nouveau deck
 		Collections.shuffle(deck);	//Mélange aléatoirement les cartes du deck : notre entité deck contient maintenant les CarteJeu dans un ordre aléatoire
-			
+		
+		Image bandofond = new Image(getClass().getResource("/BandobaHunvre3.jpg").toExternalForm());
 		BackgroundImage bg = new BackgroundImage(
 		        bandofond,
 		        BackgroundRepeat.NO_REPEAT,

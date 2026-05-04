@@ -21,13 +21,13 @@ import view.TableauScore;
 public class ControleurAccueil {
 	
 	static Partie partie = new Partie();
-    private int direction;
+    
     
     ArrayList<Integer> scores = new ArrayList<Integer>();
     ArrayList<String> pseudos = new ArrayList<String>();
 
     public ControleurAccueil(int direction) {
-        this.direction = direction;
+        
 
         if (direction == 1) {
             System.out.println("Vous êtes arrivés sur le profil");
@@ -41,6 +41,8 @@ public class ControleurAccueil {
 				ResultSet listeCarte = dao.getStatement().executeQuery("SELECT id_carte, valeur, recto, couleur FROM carte;");
 				
 				ControleurConnexion.joueur.setDeck(new DeckJoueur());
+				
+				
 				
 				while(listeCarte.next()) {
 					ControleurConnexion.joueur.getDeck().add(new CarteJeu(

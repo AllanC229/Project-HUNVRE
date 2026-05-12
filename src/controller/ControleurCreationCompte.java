@@ -1,127 +1,101 @@
 package controller;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
-
+// Import de la bibliothèque BCrypt pour le hashage et la vérification des mots de passe
+import org.mindrot.jbcrypt.BCrypt;
 import app.MainApp;
 import connection.DAOAcces;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.DeckJoueur;
 import model.Utilisateur;
 import view.CreationCompte;
 
 public class ControleurCreationCompte {
-	
-	String pseudo ;
-	String mail ;
-	String mdp ;
-	String confirmMdp ;
-	String role;
-	CreationCompte vueErreurMail;
-	
-	
-	public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur, Stage stage) {
-		
-		this.pseudo = pseudo;
-		this.mail = mail;
-		this.mdp = mdp;
-		this.confirmMdp = confirmMdp;
-		this.role = role;
-		
-		// Vérification que le mail est construit comme ceci : lettres/chiffres + @ + des lettres/chiffres + des lettres
-	    String mailCheck = mail ;
-	    String regexPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-	    
-	    
+
+    String pseudo;
+    String mail;
+    String mdp;
+    String confirmMdp;
+    String role;
+    CreationCompte vueErreurMail;
+
+    public ControleurCreationCompte(String pseudo, String mail, String mdp, String confirmMdp, String role, CreationCompte vueErreur, Stage stage) {
+
+        this.pseudo = pseudo;
+        this.mail = mail;
+        this.mdp = mdp;
+        this.confirmMdp = confirmMdp;
+        this.role = role;
+
+        String mailCheck = mail;
+        String regexPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
         if (!pseudo.equals("") && !mail.equals("") && !mdp.equals("") && patternMatches(mailCheck, regexPattern)) {
-        	
-        		if (mdp.equals(confirmMdp)) {         		
 
-        			System.out.println("formulaire ok");
-        	
-        			try {
-        	    		
-        	    		DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", ""); 
-        	    		
-        	      		// vérification si le mail du formualire n'existe pas déjà dans la BDD
-        	    		String verifMail = "SELECT mail "
-        	    						  + "FROM utilisateur;";
-        	    		
-        	    		PreparedStatement pstVerifMail = dao.getConn().prepareStatement(verifMail);
-        	    		
-        	    		ResultSet rsVerifMail = pstVerifMail.executeQuery();
-        	    		
-        	    		boolean flag = false; // flag = false veut dire, le mail existe pas par défaut en BDD
-        	    		
-    	    			// Vérifier si le mail inséré existe déjà en BD
-        	    		while (rsVerifMail.next()){
-	        	    		if (mail.equals(rsVerifMail.getString("mail"))) {
-	        	    			flag = true ;
-	        	    			System.out.println("le mail existe déjà");
-	        	    			// CreationCompte erreur = new CreationCompte(new VBox());
-	        	        		String message = "Le mail existe déjà";
-	        	               // erreur.ajouterMessage(message);
-	        	        		vueErreur.ajouterMessage(message);
-	        	        	}
-        	    		}
-        	    		
-        	    		if (flag == false) {
-        	    		String strInsertNouveauCompte = "INSERT INTO utilisateur "
-        	    										+ "(pseudo, mdp, mail, role) "
-        	    										+ "VALUES (?, ?, ?, ?);";
+            if (mdp.equals(confirmMdp)) {
 
-        	    		// Création d'une requête préparée
-        	    		PreparedStatement pstNouveauCompte = dao.getConn().prepareStatement(strInsertNouveauCompte);
-        	    		
-        	    		pstNouveauCompte.setString(1, pseudo);
-        	    		pstNouveauCompte.setString(2, mdp);
-        	    		pstNouveauCompte.setString(3, mail);
-        	    		pstNouveauCompte.setString(4, role);
+                System.out.println("formulaire ok");
 
-        	    		pstNouveauCompte.execute();
-        	    	        	    		
-        	    		
-        	    		//la requête est exécutée => instanciation Utilisateur
-            	    	System.out.println("requête exécutée, nouvel utilisateur instancié");
-        	    		MainApp.utilisateur = new Utilisateur(pseudo, mail, new DeckJoueur(), role); 
-        	    		new ControleurConnexion(1, mail, mdp, stage); // renvoie vers l'accueil
-        	           	    		
-        	    		}
-        	    		dao.closeConnection();
+                try {
+                    DAOAcces dao = new DAOAcces("com.mysql.cj.jdbc.Driver", "hunvre", "root", "");
 
-        	    	
-        	    	} catch (SQLException e) {
-        	    		System.out.println("Problème SQL");
-        	    		e.printStackTrace();	
-        	    	} 
+                    String verifMail = "SELECT mail FROM utilisateur;";
+                    PreparedStatement pstVerifMail = dao.getConn().prepareStatement(verifMail);
+                    ResultSet rsVerifMail = pstVerifMail.executeQuery();
 
-        		
-        		} else {
-        	        // Afficher l'erreur de correspondance des mdp
-        			String message = "Les mots de passe ne correspondent pas";
-        			vueErreur.ajouterMessage(message);
-        			System.out.println("les mdp ne correspondent pas");
-        		}
-        
+                    boolean flag = false;
+
+                    while (rsVerifMail.next()) {
+                        if (mail.equals(rsVerifMail.getString("mail"))) {
+                            flag = true;
+                            System.out.println("le mail existe déjà");
+                            vueErreur.ajouterMessage("Le mail existe déjà");
+                        }
+                    }
+
+                    if (flag == false) {
+                        // On hashe le mot de passe saisi par l'utilisateur avant de le stocker en BDD.
+                        // BCrypt.gensalt() génère un sel aléatoire, intégré dans le hash résultant.
+                        // C'est ce hash qui sera stocké en BDD, jamais le mot de passe en clair.
+                        String mdpHashe = BCrypt.hashpw(mdp, BCrypt.gensalt());
+
+                        String strInsertNouveauCompte = "INSERT INTO utilisateur (pseudo, mdp, mail, role) VALUES (?, ?, ?, ?);";
+                        PreparedStatement pstNouveauCompte = dao.getConn().prepareStatement(strInsertNouveauCompte);
+                        pstNouveauCompte.setString(1, pseudo);
+                        pstNouveauCompte.setString(2, mdpHashe);
+                        pstNouveauCompte.setString(3, mail);
+                        pstNouveauCompte.setString(4, role);
+                        pstNouveauCompte.execute();
+
+                        System.out.println("requête exécutée, nouvel utilisateur instancié");
+                        MainApp.utilisateur = new Utilisateur(pseudo, mail, new DeckJoueur(), role);
+                        new ControleurConnexion(1, mail, mdp, stage);
+                    }
+                    dao.closeConnection();
+
+                } catch (SQLException e) {
+                    System.out.println("Problème SQL");
+                    e.printStackTrace();
+                }
+
+            } else {
+                vueErreur.ajouterMessage("Les mots de passe ne correspondent pas");
+                System.out.println("les mdp ne correspondent pas");
+            }
+
         } else {
-    	    // Afficher l'erreur de saisie
-    		String message = "Veuillez remplir tout les champs";
-    		vueErreur.ajouterMessage(message);
-    		System.out.println("tout les champs ne sont pas remplis");
+            vueErreur.ajouterMessage("Veuillez remplir tout les champs");
+            System.out.println("tout les champs ne sont pas remplis");
         }
-
     }
 
-	public boolean patternMatches(String mailAddress, String regexPattern) {
-	    return Pattern.compile(regexPattern)
-	      .matcher(mailAddress)
-	      .matches();
-	}
-	
-	}
+    public boolean patternMatches(String mailAddress, String regexPattern) {
+        return Pattern.compile(regexPattern)
+            .matcher(mailAddress)
+            .matches();
+    }
+}
